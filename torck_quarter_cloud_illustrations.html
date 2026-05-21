@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>torck Quarter Cloud Illustrations</title>
+  <style>
+    @font-face {
+      font-family: "Inter";
+      src: url("Fonts/Inter_28pt-Regular.ttf") format("truetype");
+      font-weight: 400;
+    }
+
+    @font-face {
+      font-family: "Inter";
+      src: url("Fonts/Inter_28pt-Black.ttf") format("truetype");
+      font-weight: 900;
+    }
+
+    @font-face {
+      font-family: "Space Mono";
+      src: url("Fonts/SpaceMono-Regular.ttf") format("truetype");
+      font-weight: 400;
+    }
+
+    :root {
+      --slate: #415578;
+      --yellow: #f0fa28;
+      --cream: #f5f0eb;
+      --ink: #182238;
+      --muted: rgba(24, 34, 56, 0.66);
+      --line: rgba(65, 85, 120, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Inter", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .hero {
+      min-height: 62vh;
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+      gap: 52px;
+      align-items: end;
+      padding: 56px 64px 44px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .meta,
+    .tag,
+    .caption {
+      font-family: "Space Mono", monospace;
+    }
+
+    .meta {
+      color: var(--slate);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 22px 0 0;
+      max-width: 640px;
+      color: var(--slate);
+      font-size: clamp(52px, 6vw, 92px);
+      line-height: 0.88;
+      font-weight: 900;
+    }
+
+    .hero-copy {
+      max-width: 590px;
+      margin: 28px 0 0;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    .hero-visual {
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--slate);
+      min-height: 430px;
+      border: 1px solid rgba(65, 85, 120, 0.18);
+    }
+
+    .section {
+      padding: 64px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 34px;
+      margin-bottom: 34px;
+    }
+
+    h2 {
+      margin: 0;
+      max-width: 780px;
+      color: var(--slate);
+      font-size: clamp(36px, 4vw, 62px);
+      line-height: 0.96;
+      font-weight: 900;
+    }
+
+    .section-copy {
+      max-width: 460px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .tile {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    .visual {
+      aspect-ratio: 16 / 9;
+      background: var(--slate);
+    }
+
+    .tile-body {
+      padding: 22px;
+    }
+
+    .tag {
+      margin-bottom: 14px;
+      color: var(--slate);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      color: var(--ink);
+      font-size: 27px;
+      line-height: 1.05;
+      font-weight: 900;
+    }
+
+    .tile-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .bg {
+      fill: var(--slate);
+    }
+
+    .cream-bg {
+      fill: var(--cream);
+    }
+
+    .grid-line {
+      stroke: var(--cream);
+      stroke-width: 1;
+      opacity: 0.15;
+    }
+
+    .grid-line-slate {
+      stroke: var(--slate);
+      stroke-width: 1;
+      opacity: 0.16;
+    }
+
+    .cross {
+      stroke: var(--cream);
+      stroke-width: 1.5;
+      opacity: 0.35;
+    }
+
+    .cross-slate {
+      stroke: var(--slate);
+      stroke-width: 1.5;
+      opacity: 0.34;
+    }
+
+    .route {
+      fill: none;
+      stroke: var(--cream);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.62;
+    }
+
+    .route-thin {
+      fill: none;
+      stroke: var(--cream);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.42;
+    }
+
+    .route-slate {
+      fill: none;
+      stroke: var(--slate);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.72;
+    }
+
+    .route-slate-thin {
+      fill: none;
+      stroke: var(--slate);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.42;
+    }
+
+    .quarter {
+      fill: none;
+      stroke: var(--cream);
+      stroke-width: 28;
+      stroke-linecap: butt;
+      opacity: 0.94;
+    }
+
+    .quarter-soft {
+      fill: none;
+      stroke: var(--cream);
+      stroke-width: 20;
+      stroke-linecap: butt;
+      opacity: 0.48;
+    }
+
+    .quarter-slate {
+      fill: none;
+      stroke: var(--slate);
+      stroke-width: 28;
+      stroke-linecap: butt;
+      opacity: 0.9;
+    }
+
+    .quarter-slate-soft {
+      fill: none;
+      stroke: var(--slate);
+      stroke-width: 20;
+      stroke-linecap: butt;
+      opacity: 0.45;
+    }
+
+    .cloud-arc {
+      fill: none;
+      stroke: var(--cream);
+      stroke-width: 28;
+      stroke-linecap: butt;
+      opacity: 0.96;
+    }
+
+    .cloud-arc-soft {
+      fill: none;
+      stroke: var(--cream);
+      stroke-width: 18;
+      stroke-linecap: butt;
+      opacity: 0.42;
+    }
+
+    .cloud-arc-slate {
+      fill: none;
+      stroke: var(--slate);
+      stroke-width: 28;
+      stroke-linecap: butt;
+      opacity: 0.92;
+    }
+
+    .impulse {
+      fill: var(--yellow);
+    }
+
+    .node {
+      fill: var(--cream);
+      opacity: 0.88;
+    }
+
+    .node-slate {
+      fill: var(--slate);
+      opacity: 0.86;
+    }
+
+    .zone {
+      fill: rgba(245, 240, 235, 0.08);
+      stroke: rgba(245, 240, 235, 0.38);
+      stroke-width: 2;
+    }
+
+    .zone-slate {
+      fill: rgba(65, 85, 120, 0.06);
+      stroke: rgba(65, 85, 120, 0.36);
+      stroke-width: 2;
+    }
+
+    .footer {
+      padding: 34px 64px 52px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: rgba(24, 34, 56, 0.55);
+      font-size: 13px;
+    }
+
+    @media (max-width: 1040px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .hero,
+      .section,
+      .footer {
+        padding-left: 22px;
+        padding-right: 22px;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-copy {
+        margin-top: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <div class="meta">torck / Quarter Illustration System</div>
+        <h1>Cloud ohne Wolke.</h1>
+        <p class="hero-copy">
+          Das Thema wird nicht als Icon gezeigt. Cloud wird als Systemzustand uebersetzt:
+          Verteilung, Stabilitaet, Skalierung und Kontrolle im Raster.
+        </p>
+      </div>
+
+      <div class="hero-visual">
+        <svg viewBox="0 0 960 540" role="img" aria-label="Cloud-Silhouette aus Quarter-Modulen im Raster">
+          <rect class="bg" width="960" height="540"/>
+          <g>
+            <path class="grid-line" d="M80 80H880M80 140H880M80 200H880M80 260H880M80 320H880M80 380H880M80 440H880"/>
+            <path class="grid-line" d="M80 80V460M140 80V460M200 80V460M260 80V460M320 80V460M380 80V460M440 80V460M500 80V460M560 80V460M620 80V460M680 80V460M740 80V460M800 80V460M860 80V460"/>
+          </g>
+          <g>
+            <path class="route-thin" d="M160 330H270M690 330H800M480 330V410M360 330V410M600 330V410"/>
+            <path class="route" d="M270 330H690"/>
+            <path class="cloud-arc" d="M270 330A90 90 0 0 1 360 240"/>
+            <path class="cloud-arc" d="M360 240A90 90 0 0 1 450 150"/>
+            <path class="cloud-arc" d="M450 150A90 90 0 0 1 540 240"/>
+            <path class="cloud-arc" d="M540 240A75 75 0 0 1 615 315"/>
+            <path class="cloud-arc" d="M615 315A75 75 0 0 1 690 330"/>
+            <path class="cloud-arc-soft" d="M330 330H650"/>
+            <circle class="impulse" cx="270" cy="330" r="11"/>
+            <circle class="impulse" cx="480" cy="330" r="9"/>
+            <circle class="node" cx="360" cy="410" r="7"/>
+            <circle class="node" cx="480" cy="410" r="7"/>
+            <circle class="node" cx="600" cy="410" r="7"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Cloud als erkennbare Form</h2>
+        <p class="section-copy">
+          Die Wolke darf sichtbar sein, aber sie wird konstruiert: aus Quarter-Bögen, Rasterlinien und funktionalen Signalwegen.
+        </p>
+      </div>
+
+      <div class="grid">
+        <article class="tile">
+          <div class="visual">
+            <svg viewBox="0 0 960 540" role="img" aria-label="Erkennbare Cloud-Silhouette aus Quarter-Modulen">
+              <rect class="bg" width="960" height="540"/>
+              <g>
+                <path class="grid-line" d="M80 80H880M80 140H880M80 200H880M80 260H880M80 320H880M80 380H880M80 440H880"/>
+                <path class="grid-line" d="M80 80V460M140 80V460M200 80V460M260 80V460M320 80V460M380 80V460M440 80V460M500 80V460M560 80V460M620 80V460M680 80V460M740 80V460M800 80V460M860 80V460"/>
+              </g>
+              <g>
+                <path class="route-thin" d="M170 330H270M690 330H790M360 330V410M480 330V410M600 330V410"/>
+                <path class="route" d="M270 330H690"/>
+                <path class="cloud-arc" d="M270 330A90 90 0 0 1 360 240"/>
+                <path class="cloud-arc" d="M360 240A90 90 0 0 1 450 150"/>
+                <path class="cloud-arc" d="M450 150A90 90 0 0 1 540 240"/>
+                <path class="cloud-arc" d="M540 240A75 75 0 0 1 615 315"/>
+                <path class="cloud-arc" d="M615 315A75 75 0 0 1 690 330"/>
+                <path class="cloud-arc-soft" d="M330 330H650"/>
+                <circle class="impulse" cx="270" cy="330" r="11"/>
+                <circle class="impulse" cx="480" cy="330" r="9"/>
+                <circle class="node" cx="360" cy="410" r="7"/>
+                <circle class="node" cx="480" cy="410" r="7"/>
+                <circle class="node" cx="600" cy="410" r="7"/>
+              </g>
+            </svg>
+          </div>
+          <div class="tile-body">
+            <div class="tag">Cloud / Key Visual</div>
+            <h3>Wolke aus Quarter-Bögen</h3>
+            <p>Die Cloud ist identifizierbar, bleibt aber hart konstruiert: kein weiches Icon, sondern ein Systemzeichen.</p>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="visual">
+            <svg viewBox="0 0 960 540" role="img" aria-label="Cloud Infrastructure Illustration">
+              <rect class="bg" width="960" height="540"/>
+              <g>
+                <path class="grid-line" d="M80 80H880M80 140H880M80 200H880M80 260H880M80 320H880M80 380H880M80 440H880"/>
+                <path class="grid-line" d="M80 80V460M140 80V460M200 80V460M260 80V460M320 80V460M380 80V460M440 80V460M500 80V460M560 80V460M620 80V460M680 80V460M740 80V460M800 80V460M860 80V460"/>
+              </g>
+              <g>
+                <rect class="zone" x="680" y="116" width="120" height="90" rx="0"/>
+                <rect class="zone" x="700" y="236" width="120" height="90" rx="0"/>
+                <rect class="zone" x="660" y="356" width="120" height="90" rx="0"/>
+                <path class="route-thin" d="M140 280H280M520 280H620M620 280V160H680M620 280H700M620 280V400H660"/>
+                <path class="route" d="M280 280H520"/>
+                <path class="quarter" d="M340 220A60 60 0 0 1 400 280"/>
+                <path class="quarter" d="M430 280A60 60 0 0 1 490 220"/>
+                <circle class="impulse" cx="280" cy="280" r="11"/>
+                <circle class="impulse" cx="620" cy="280" r="8"/>
+                <circle class="node" cx="680" cy="160" r="6"/>
+                <circle class="node" cx="700" cy="280" r="6"/>
+                <circle class="node" cx="660" cy="400" r="6"/>
+              </g>
+            </svg>
+          </div>
+          <div class="tile-body">
+            <div class="tag">Cloud / Infrastructure</div>
+            <h3>Verteilte Last rastet ein</h3>
+            <p>Ein Eingangssignal wird ueber Quarter-Module kontrolliert in drei stabile Service-Zonen verteilt.</p>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="visual">
+            <svg viewBox="0 0 960 540" role="img" aria-label="Cloud Migration Illustration">
+              <rect class="cream-bg" width="960" height="540"/>
+              <g>
+                <path class="grid-line-slate" d="M80 80H880M80 140H880M80 200H880M80 260H880M80 320H880M80 380H880M80 440H880"/>
+                <path class="grid-line-slate" d="M80 80V460M140 80V460M200 80V460M260 80V460M320 80V460M380 80V460M440 80V460M500 80V460M560 80V460M620 80V460M680 80V460M740 80V460M800 80V460M860 80V460"/>
+              </g>
+              <g>
+                <rect class="zone-slate" x="118" y="128" width="170" height="230"/>
+                <rect class="zone-slate" x="672" y="128" width="170" height="230"/>
+                <path class="route-slate-thin" d="M150 180H250M150 240H230M150 300H270"/>
+                <path class="route-slate" d="M288 240H672"/>
+                <path class="route-slate-thin" d="M672 180H800M672 240H820M672 300H790"/>
+                <path class="quarter-slate-soft" d="M332 180A60 60 0 0 1 392 240"/>
+                <path class="quarter-slate" d="M452 240A60 60 0 0 1 512 180"/>
+                <path class="quarter-slate-soft" d="M540 300A60 60 0 0 0 600 240"/>
+                <circle class="impulse" cx="408" cy="240" r="10"/>
+                <circle class="node-slate" cx="760" cy="180" r="6"/>
+                <circle class="node-slate" cx="800" cy="240" r="6"/>
+                <circle class="node-slate" cx="740" cy="300" r="6"/>
+              </g>
+            </svg>
+          </div>
+          <div class="tile-body">
+            <div class="tag">Cloud / Migration</div>
+            <h3>Vom Block zur Architektur</h3>
+            <p>Links dichte Altstruktur, rechts geordnete Zielstruktur. Die Quarter-Kette ist der Uebergang.</p>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="visual">
+            <svg viewBox="0 0 960 540" role="img" aria-label="Cloud Scaling Illustration">
+              <rect class="bg" width="960" height="540"/>
+              <g>
+                <path class="grid-line" d="M80 80H880M80 140H880M80 200H880M80 260H880M80 320H880M80 380H880M80 440H880"/>
+                <path class="grid-line" d="M80 80V460M140 80V460M200 80V460M260 80V460M320 80V460M380 80V460M440 80V460M500 80V460M560 80V460M620 80V460M680 80V460M740 80V460M800 80V460M860 80V460"/>
+              </g>
+              <g>
+                <path class="route" d="M160 280H440"/>
+                <path class="route-thin" d="M440 280H560M560 280V160H780M560 280H800M560 280V400H740"/>
+                <path class="quarter" d="M380 220A60 60 0 0 1 440 280"/>
+                <path class="quarter" d="M500 280A60 60 0 0 1 560 220"/>
+                <path class="quarter-soft" d="M620 160A60 60 0 0 1 680 100"/>
+                <path class="quarter-soft" d="M620 400A60 60 0 0 0 680 340"/>
+                <circle class="impulse" cx="240" cy="280" r="10"/>
+                <circle class="impulse" cx="560" cy="280" r="10"/>
+                <circle class="node" cx="780" cy="160" r="7"/>
+                <circle class="node" cx="800" cy="280" r="7"/>
+                <circle class="node" cx="740" cy="400" r="7"/>
+              </g>
+            </svg>
+          </div>
+          <div class="tile-body">
+            <div class="tag">Cloud / Scaling</div>
+            <h3>Kontrolliert auffaechern</h3>
+            <p>Skalierung wird nicht als Wachstumseffekt gezeigt, sondern als saubere Verteilung in parallele Bahnen.</p>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="visual">
+            <svg viewBox="0 0 960 540" role="img" aria-label="Cloud Security Illustration">
+              <rect class="cream-bg" width="960" height="540"/>
+              <g>
+                <path class="grid-line-slate" d="M80 80H880M80 140H880M80 200H880M80 260H880M80 320H880M80 380H880M80 440H880"/>
+                <path class="grid-line-slate" d="M80 80V460M140 80V460M200 80V460M260 80V460M320 80V460M380 80V460M440 80V460M500 80V460M560 80V460M620 80V460M680 80V460M740 80V460M800 80V460M860 80V460"/>
+              </g>
+              <g>
+                <rect class="zone-slate" x="326" y="146" width="300" height="240"/>
+                <path class="route-slate-thin" d="M160 260H326M626 260H800"/>
+                <path class="quarter-slate" d="M360 200A60 60 0 0 1 420 260"/>
+                <path class="quarter-slate" d="M420 260A60 60 0 0 1 480 200"/>
+                <path class="quarter-slate" d="M480 320A60 60 0 0 0 540 260"/>
+                <path class="quarter-slate" d="M540 260A60 60 0 0 0 600 320"/>
+                <circle class="impulse" cx="326" cy="260" r="10"/>
+                <circle class="impulse" cx="626" cy="260" r="8"/>
+                <circle class="node-slate" cx="800" cy="260" r="7"/>
+              </g>
+            </svg>
+          </div>
+          <div class="tile-body">
+            <div class="tag">Cloud / Security</div>
+            <h3>Kontrolle statt Bedrohung</h3>
+            <p>Security wird als geregelte Passage gezeigt: Eingang, Schleuse, Ausgang. Kein Schloss, kein Alarm.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="meta">torck.io | Code mit Drehmoment.</div>
+    <div>Quarter/Raster Illustrations / Cloud V0.1</div>
+  </footer>
+</body>
+</html>

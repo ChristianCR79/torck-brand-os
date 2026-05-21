@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>torck Slate Image Tool</title>
+  <style>
+    @font-face {
+      font-family: "Inter";
+      src: url("Fonts/Inter_28pt-Regular.ttf") format("truetype");
+      font-weight: 400;
+    }
+
+    @font-face {
+      font-family: "Inter";
+      src: url("Fonts/Inter_28pt-Black.ttf") format("truetype");
+      font-weight: 900;
+    }
+
+    @font-face {
+      font-family: "Space Mono";
+      src: url("Fonts/SpaceMono-Regular.ttf") format("truetype");
+      font-weight: 400;
+    }
+
+    :root {
+      --slate: #415578;
+      --yellow: #f0fa28;
+      --cream: #f5f0eb;
+      --ink: #182238;
+      --muted: rgba(24, 34, 56, 0.66);
+      --line: rgba(65, 85, 120, 0.18);
+      --panel: rgba(255, 255, 255, 0.24);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", Arial, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--line);
+      padding: 38px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .meta,
+    .label,
+    .small,
+    .drop-hint {
+      font-family: "Space Mono", monospace;
+    }
+
+    .meta {
+      color: var(--slate);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--slate);
+      font-size: clamp(42px, 5vw, 66px);
+      line-height: 0.9;
+      font-weight: 900;
+      max-width: 360px;
+    }
+
+    .intro {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .dropzone {
+      min-height: 172px;
+      border: 1px dashed rgba(65, 85, 120, 0.42);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.26);
+      padding: 24px;
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .dropzone:hover,
+    .dropzone.is-dragging {
+      border-color: var(--slate);
+      background: rgba(255, 255, 255, 0.44);
+    }
+
+    .dropzone.is-dragging {
+      transform: translateY(-2px);
+    }
+
+    .drop-title {
+      color: var(--ink);
+      font-size: 22px;
+      line-height: 1.15;
+      font-weight: 900;
+      margin: 0;
+    }
+
+    .drop-hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .controls {
+      display: grid;
+      gap: 19px;
+    }
+
+    .control {
+      display: grid;
+      gap: 9px;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .label {
+      color: var(--slate);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .value {
+      color: var(--muted);
+      font-size: 13px;
+      min-width: 52px;
+      text-align: right;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--slate);
+    }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    input[type="color"] {
+      width: 44px;
+      height: 34px;
+      padding: 0;
+      border: 1px solid var(--line);
+      background: transparent;
+      border-radius: 6px;
+    }
+
+    .swatch-code {
+      font-family: "Space Mono", monospace;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .button {
+      min-height: 44px;
+      border-radius: 6px;
+      border: 1px solid var(--slate);
+      background: var(--slate);
+      color: var(--cream);
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--slate);
+    }
+
+    .button:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .stage {
+      min-width: 0;
+      padding: 38px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 22px;
+    }
+
+    .stage-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--slate);
+      font-size: clamp(28px, 3vw, 44px);
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .preview-grid {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .preview {
+      min-width: 0;
+      min-height: 460px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.18);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
+    }
+
+    .preview-title {
+      min-height: 46px;
+      padding: 15px 18px 0;
+      color: var(--slate);
+      font-family: "Space Mono", monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .canvas-wrap {
+      min-height: 0;
+      padding: 18px;
+      display: grid;
+      place-items: center;
+    }
+
+    canvas {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 18px 46px rgba(24, 34, 56, 0.16);
+      background: var(--cream);
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      max-width: 320px;
+      line-height: 1.5;
+    }
+
+    .empty-mark {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 18px;
+      border: 18px solid var(--slate);
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      opacity: 0.34;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(20px);
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--cream);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 160ms ease, transform 160ms ease;
+      font-size: 14px;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .preview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .sidebar,
+      .stage {
+        padding: 22px;
+      }
+
+      .stage-head {
+        display: block;
+      }
+
+      .small {
+        margin-top: 12px;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .preview {
+        min-height: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <aside class="sidebar">
+      <div class="meta">torck / Image Tool</div>
+      <h1>Slate Bildwandler.</h1>
+      <p class="intro">
+        Wandelt ein Bild in Graustufen und verrechnet es per Negativ multiplizieren mit Slate Blue.
+      </p>
+
+      <label class="dropzone" id="dropzone">
+        <input class="file-input" id="fileInput" type="file" accept="image/*">
+        <span class="drop-title">Bild hier ablegen</span>
+        <span class="drop-hint">PNG, JPG, WebP oder GIF. Verarbeitung bleibt lokal im Browser.</span>
+      </label>
+
+      <section class="controls" aria-label="Bildregler">
+        <div class="control">
+          <div class="control-row">
+            <label class="label" for="color">Farbe</label>
+            <span class="swatch-code" id="colorValue">#415578</span>
+          </div>
+          <div class="color-row">
+            <input id="color" type="color" value="#415578">
+            <span class="small">Standard: torck Slate Blue</span>
+          </div>
+        </div>
+
+        <div class="control">
+          <div class="control-row">
+            <label class="label" for="contrast">Kontrast</label>
+            <span class="value" id="contrastValue">0</span>
+          </div>
+          <input id="contrast" type="range" min="-50" max="50" value="0">
+        </div>
+
+        <div class="control">
+          <div class="control-row">
+            <label class="label" for="brightness">Helligkeit</label>
+            <span class="value" id="brightnessValue">0</span>
+          </div>
+          <input id="brightness" type="range" min="-50" max="50" value="0">
+        </div>
+      </section>
+
+      <div class="actions">
+        <button class="button secondary" id="resetButton" type="button" disabled>Reset</button>
+        <button class="button" id="downloadButton" type="button" disabled>PNG exportieren</button>
+      </div>
+    </aside>
+
+    <section class="stage">
+      <div class="stage-head">
+        <h2>Vorschau</h2>
+        <div class="small">Formel: Graustufe → Screen mit Slate Blue.</div>
+      </div>
+
+      <div class="preview-grid">
+        <div class="preview">
+          <div class="preview-title">Slate Negativ multipliziert</div>
+          <div class="canvas-wrap">
+            <canvas id="sourceCanvas" hidden></canvas>
+            <canvas id="resultCanvas" hidden></canvas>
+            <div class="empty" id="resultEmpty">
+              <div class="empty-mark"></div>
+              Das Ergebnis erscheint hier.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Bild verarbeitet</div>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const dropzone = document.getElementById("dropzone");
+    const sourceCanvas = document.getElementById("sourceCanvas");
+    const resultCanvas = document.getElementById("resultCanvas");
+    const resultEmpty = document.getElementById("resultEmpty");
+    const downloadButton = document.getElementById("downloadButton");
+    const resetButton = document.getElementById("resetButton");
+    const colorInput = document.getElementById("color");
+    const colorValue = document.getElementById("colorValue");
+    const contrastInput = document.getElementById("contrast");
+    const contrastValue = document.getElementById("contrastValue");
+    const brightnessInput = document.getElementById("brightness");
+    const brightnessValue = document.getElementById("brightnessValue");
+    const toast = document.getElementById("toast");
+
+    let image = null;
+    let fileStem = "torck-slate-image";
+
+    function clamp(value) {
+      return Math.max(0, Math.min(255, value));
+    }
+
+    function hexToRgb(hex) {
+      const normalized = hex.replace("#", "");
+      return {
+        r: parseInt(normalized.slice(0, 2), 16),
+        g: parseInt(normalized.slice(2, 4), 16),
+        b: parseInt(normalized.slice(4, 6), 16)
+      };
+    }
+
+    function screenBlend(base, blend) {
+      return 255 - ((255 - base) * (255 - blend)) / 255;
+    }
+
+    function fitCanvasToImage(canvas, img) {
+      const maxSide = 2400;
+      const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+      canvas.width = Math.round(img.naturalWidth * scale);
+      canvas.height = Math.round(img.naturalHeight * scale);
+    }
+
+    function drawSource() {
+      const ctx = sourceCanvas.getContext("2d");
+      fitCanvasToImage(sourceCanvas, image);
+      ctx.clearRect(0, 0, sourceCanvas.width, sourceCanvas.height);
+      ctx.drawImage(image, 0, 0, sourceCanvas.width, sourceCanvas.height);
+    }
+
+    function processImage() {
+      if (!image) return;
+
+      drawSource();
+      resultCanvas.width = sourceCanvas.width;
+      resultCanvas.height = sourceCanvas.height;
+
+      const sourceCtx = sourceCanvas.getContext("2d");
+      const resultCtx = resultCanvas.getContext("2d");
+      const imageData = sourceCtx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
+      const data = imageData.data;
+      const slate = hexToRgb(colorInput.value);
+      const contrast = Number(contrastInput.value);
+      const brightness = Number(brightnessInput.value);
+      const contrastFactor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+
+      for (let index = 0; index < data.length; index += 4) {
+        const red = data[index];
+        const green = data[index + 1];
+        const blue = data[index + 2];
+        let gray = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+
+        gray = contrastFactor * (gray - 128) + 128 + brightness;
+        gray = clamp(gray);
+
+        const screenR = screenBlend(slate.r, gray);
+        const screenG = screenBlend(slate.g, gray);
+        const screenB = screenBlend(slate.b, gray);
+
+        data[index] = clamp(screenR);
+        data[index + 1] = clamp(screenG);
+        data[index + 2] = clamp(screenB);
+      }
+
+      resultCtx.putImageData(imageData, 0, 0);
+      resultCanvas.hidden = false;
+      resultEmpty.hidden = true;
+      downloadButton.disabled = false;
+      resetButton.disabled = false;
+      updateLabels();
+    }
+
+    function updateLabels() {
+      colorValue.textContent = colorInput.value.toUpperCase();
+      contrastValue.textContent = contrastInput.value;
+      brightnessValue.textContent = brightnessInput.value;
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("is-visible");
+      window.setTimeout(() => toast.classList.remove("is-visible"), 1400);
+    }
+
+    function loadFile(file) {
+      if (!file || !file.type.startsWith("image/")) {
+        showToast("Bitte ein Bild auswählen");
+        return;
+      }
+
+      fileStem = file.name.replace(/\.[^.]+$/, "").replace(/[^a-z0-9-_]+/gi, "-").toLowerCase() || "torck-slate-image";
+      const reader = new FileReader();
+      reader.onload = () => {
+        const nextImage = new Image();
+        nextImage.onload = () => {
+          image = nextImage;
+          processImage();
+          showToast("Bild verarbeitet");
+        };
+        nextImage.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    fileInput.addEventListener("change", (event) => {
+      loadFile(event.target.files[0]);
+    });
+
+    dropzone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      dropzone.classList.add("is-dragging");
+    });
+
+    dropzone.addEventListener("dragleave", () => {
+      dropzone.classList.remove("is-dragging");
+    });
+
+    dropzone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      dropzone.classList.remove("is-dragging");
+      loadFile(event.dataTransfer.files[0]);
+    });
+
+    [colorInput, contrastInput, brightnessInput].forEach((input) => {
+      input.addEventListener("input", () => {
+        updateLabels();
+        processImage();
+      });
+    });
+
+    resetButton.addEventListener("click", () => {
+      colorInput.value = "#415578";
+      contrastInput.value = "0";
+      brightnessInput.value = "0";
+      updateLabels();
+      processImage();
+    });
+
+    downloadButton.addEventListener("click", () => {
+      if (!image) return;
+      const link = document.createElement("a");
+      link.download = `${fileStem}-slate-screen.png`;
+      link.href = resultCanvas.toDataURL("image/png");
+      link.click();
+    });
+
+    updateLabels();
+  </script>
+</body>
+</html>

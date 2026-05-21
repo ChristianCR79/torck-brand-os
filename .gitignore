@@ -1,0 +1,8 @@
+.DS_Store
+*.ai
+*_backup.html
+Hahn_Creative_Strategy.pdf
+torck_brand.pdf
+moodboard-assets/
+Mitarbeiter/
+deploy_github.sh

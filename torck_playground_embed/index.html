@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>torck Playground Embed</title>
+<link rel="stylesheet" href="torck-playground.css" />
+</head>
+<body>
+  <main>
+    <section class="torck-playground" aria-label="torck Code mit Drehmoment Playground">
+      <div class="torck-playground__frame">
+        <div class="torck-playground__copy" aria-label="Editierbare Headline und Subline">
+          <div class="torck-playground__text-flow">
+            <div class="torck-playground__headline" contenteditable="true" spellcheck="false">DU HAST DEN<br>DREH RAUS?</div>
+          </div>
+          <div class="torck-playground__subline" contenteditable="true" spellcheck="false">Dann komm ins Team.</div>
+        </div>
+        <svg class="torck-playground__motion" viewBox="0 0 960 600" role="img" aria-labelledby="torckMotionTitle">
+          <title id="torckMotionTitle">Quarter-Module ordnen sich im Raster erst zu Kreisen und dann zu einem finalen Kreis.</title>
+          <g data-torck-grid></g>
+          <g data-torck-quarters></g>
+          <text class="torck-playground__status" x="126" y="500">GRID / QUARTER / TORQUE</text>
+        </svg>
+      </div>
+      <div class="torck-playground__controls">
+        <button class="torck-playground__button" type="button" data-torck-shuffle>Shuffle</button>
+      </div>
+    </section>
+  </main>
+  <script src="torck-playground.js"></script>
+</body>
+</html>

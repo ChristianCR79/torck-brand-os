@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quarter — outline composer</title>
+<style>
+  :root {
+    --bg: #4A5677;
+    --fg: #E0EC4F;
+  }
+  * { box-sizing: border-box; }
+  html, body, #root { height: 100%; margin: 0; }
+  body {
+    font: 14px/1.4 ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", sans-serif;
+    background: #4A5677;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  .app {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: background .25s ease;
+  }
+
+  /* The stage holds the image slot + the shape SVG on top */
+  .stage {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 88px 24px 96px;
+  }
+  .frame {
+    position: relative;
+    width: min(92vw, 1280px);
+    aspect-ratio: 16 / 9;
+    max-height: calc(100vh - 200px);
+  }
+
+  /* Image slot fills the frame, sits behind the SVG */
+  .bg-slot {
+    position: absolute !important;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0;
+  }
+
+  /* Shape SVG floats above the image */
+  .shape-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ---------- Top HUD ---------- */
+  .hud-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 28px;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+  }
+  .brand-text { line-height: 1.1; }
+  .brand-name {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+  }
+  .brand-meta {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+  }
+  .meta .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .meta .seed-label {
+    opacity: 0.5;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+  }
+  .meta .seed-val { font-variant-numeric: tabular-nums; }
+  .meta .sep {
+    width: 1px;
+    height: 12px;
+  }
+  .meta .count { opacity: 0.75; }
+
+  /* ---------- Bottom HUD ---------- */
+  .hud-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 28px;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .hint {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+  }
+  kbd {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 5px;
+    border: 1px solid;
+    font: 11px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    opacity: 0.7;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+  }
+  .btn-ghost, .btn-primary {
+    appearance: none;
+    border: none;
+    font: inherit;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    padding: 0 18px;
+    height: 40px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform .12s ease, opacity .12s ease, background .12s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid;
+    opacity: 0.65;
+  }
+  .btn-ghost:hover { opacity: 1; }
+  .btn-primary {
+    background: var(--fg);
+    color: var(--bg);
+    font-weight: 600;
+  }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary .arrow {
+    display: inline-block;
+    transition: transform .15s ease;
+  }
+  .btn-primary:hover .arrow { transform: translateX(3px); }
+
+  /* ---------- image-slot internal styling tweaks ----------
+     The image slot ships with its own placeholder styles, but we don't want
+     it competing visually. Soften the empty state when nothing's dropped. */
+  image-slot {
+    --is-empty-bg: rgba(0,0,0,0.04);
+    --is-border-color: rgba(255,255,255,0.12);
+  }
+
+  /* ---------- Animations ---------- */
+  /* Each seg path uses pathLength="100" so a single dasharray/offset pair
+     works regardless of the underlying length. Tiles stagger via inline
+     animation-delay set in JS. */
+  .shape-svg .seg {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation-name: draw-in;
+    animation-duration: var(--draw-dur, 900ms);
+    animation-timing-function: cubic-bezier(.65, .05, .2, 1);
+    animation-fill-mode: forwards;
+  }
+  @keyframes draw-in {
+    from { stroke-dashoffset: 100; opacity: 0; }
+    10%  { opacity: 1; }
+    to   { stroke-dashoffset: 0; opacity: 1; }
+  }
+
+  /* Drift: each tile's inner group spins slowly around the curve corner
+     (which is the local origin after the parent translate+rotate). The
+     stagger uses --ti (tile index) so adjacent tiles drift in phase shift.
+     transform-box: fill-box anchors the origin to the inner group's own
+     bbox top-left = curve corner. */
+  /* Per-tile transforms always pivot around the cell's center (50% 50% of
+     the tile-inner's bbox = center of the S×S cell). Scatter translates
+     operate in viewport coords because the position-translate lives on the
+     outer .tile g while the animation runs on .tile-inner. */
+  .shape-svg .tile-inner {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  /* Spin rotates the whole composition as a single unit around its own
+     visual center (transform-box: fill-box → bbox of the rendered shape). */
+  .shape-root {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  .shape-svg.anim-spin .shape-root {
+    animation: shape-spin var(--spin-dur, 24s) linear infinite;
+  }
+  @keyframes shape-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .shape-svg.anim-drift .tile-inner {
+    animation: tile-drift var(--drift-dur, 24s) linear infinite;
+    animation-delay: calc(var(--ti, 0) * -1.7s);
+  }
+  @keyframes tile-drift {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* Wobble: tiles oscillate gently instead of full rotation */
+  .shape-svg.anim-wobble .tile-inner {
+    animation: tile-wobble var(--wobble-dur, 6s) ease-in-out infinite;
+    animation-delay: calc(var(--ti, 0) * -0.35s);
+  }
+  @keyframes tile-wobble {
+    0%, 100% { transform: rotate(-8deg); }
+    50%      { transform: rotate(8deg); }
+  }
+
+  /* Pulse: stroke width breathes after the draw-in completes */
+  .shape-svg.anim-pulse .seg {
+    animation-name: draw-in, seg-pulse;
+    animation-duration: var(--draw-dur, 900ms), var(--pulse-dur, 2.6s);
+    animation-timing-function: cubic-bezier(.65,.05,.2,1), ease-in-out;
+    animation-fill-mode: forwards, none;
+    animation-iteration-count: 1, infinite;
+    animation-direction: normal, alternate;
+  }
+  @keyframes seg-pulse {
+    from { stroke-opacity: 0.55; }
+    to   { stroke-opacity: 1; }
+  }
+
+  /* Crossfade between regenerations: the outgoing SVG fades out under the
+     incoming one. Both SVGs occupy the same frame; the old gets a class
+     when seed changes. The outgoing seg paths skip draw-in so they stay
+     fully visible while the parent fades. */
+  .shape-svg.outgoing {
+    animation: fade-out var(--draw-dur, 900ms) ease forwards;
+  }
+  .shape-svg.outgoing .seg {
+    animation: none !important;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shape-svg .seg {
+      animation: none !important;
+      stroke-dashoffset: 0;
+    }
+    .shape-svg .tile-inner {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="image-slot.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="generator.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+</body>
+</html>

@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>torck - Code mit Drehmoment</title>
+<style>
+  @font-face {
+    font-family: "Inter";
+    src: url("Fonts/Inter_28pt-Regular.ttf") format("truetype");
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: "Inter";
+    src: url("Fonts/Inter_28pt-Black.ttf") format("truetype");
+    font-weight: 900;
+  }
+  @font-face {
+    font-family: "Space Mono";
+    src: url("Fonts/SpaceMono-Regular.ttf") format("truetype");
+    font-weight: 400;
+  }
+
+  :root {
+    --slate: #415578;
+    --yellow: #f0fa28;
+    --cream: #f5f0eb;
+    --ink: #172033;
+    --active-bg: var(--slate);
+    --active-grid: var(--yellow);
+    --active-quarter: var(--yellow);
+    --active-headline: var(--cream);
+    --active-status: rgba(240, 250, 40, 0.56);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    background: var(--active-bg);
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    transition: background 520ms ease;
+  }
+
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(18px, 2.5vw, 34px);
+    padding: clamp(20px, 3vw, 40px);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: rgba(240, 250, 40, 0.22);
+  }
+
+  button {
+    height: 46px;
+    padding: 0 22px;
+    border-radius: 0;
+    border: 1px solid var(--yellow);
+    background: var(--yellow);
+    color: var(--slate);
+    font: 400 13px/1 "Space Mono", monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .playground-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 46px;
+  }
+
+  .stage {
+    width: min(100%, 1440px);
+    min-height: min(78svh, 820px);
+    position: relative;
+    display: grid;
+    place-items: center;
+    --motion-w: min(100%, 1380px);
+    --grid-unit: calc(var(--motion-w) / 12);
+    margin: 0 auto;
+  }
+
+  .playground-frame {
+    position: relative;
+    width: var(--motion-w);
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .stage-copy {
+    position: absolute;
+    z-index: 3;
+    left: var(--copy-left, calc(var(--grid-unit) * 1));
+    right: var(--copy-right, auto);
+    top: var(--copy-top, calc(var(--grid-unit) * 1.2));
+    bottom: var(--copy-bottom, auto);
+    width: calc(var(--grid-unit) * 10);
+    color: var(--cream);
+    pointer-events: none;
+    transition:
+      left 760ms cubic-bezier(.58, 0, .14, 1),
+      right 760ms cubic-bezier(.58, 0, .14, 1),
+      top 760ms cubic-bezier(.58, 0, .14, 1),
+      bottom 760ms cubic-bezier(.58, 0, .14, 1),
+      transform 760ms cubic-bezier(.58, 0, .14, 1);
+  }
+
+  .stage-copy::before {
+    content: "";
+    float: right;
+    width: calc(var(--grid-unit) * 2.35);
+    height: calc(var(--grid-unit) * 2.35);
+    margin-top: calc(var(--grid-unit) * 1.2);
+    margin-left: calc(var(--grid-unit) * 0.25);
+    shape-outside: circle(50%);
+    border-radius: 50%;
+  }
+
+  .stage-text-flow {
+    display: flow-root;
+  }
+
+  .stage-headline,
+  .stage-subline {
+    pointer-events: auto;
+    outline: none;
+  }
+
+  .stage-headline {
+    font-size: clamp(46px, 7vw, 96px);
+    line-height: 0.82;
+    font-weight: 900;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    font-variant-caps: all-small-caps;
+    margin: 0;
+    max-width: 100%;
+    color: var(--active-headline);
+  }
+
+  .stage-subline {
+    display: inline-block;
+    width: auto;
+    max-width: calc(var(--grid-unit) * 8);
+    background: var(--yellow);
+    color: var(--slate);
+    font-family: "Space Mono", monospace;
+    font-size: clamp(16px, 1.9vw, 26px);
+    line-height: 1.08;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    margin-top: clamp(22px, 3.2vw, 36px);
+    padding: 0.08em 0.22em 0.14em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    white-space: nowrap;
+    overflow: visible;
+  }
+
+  .stage-copy.is-center .stage-subline {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .stage-copy.is-right .stage-subline {
+    margin-left: auto;
+  }
+
+  .stage-subline br {
+    display: none;
+  }
+
+  .stage-headline:focus,
+  .stage-subline:focus {
+    text-shadow: 0 0 0.01px var(--cream);
+  }
+
+  .motion {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: visible;
+  }
+
+  .grid-plus {
+    stroke: var(--active-grid);
+    stroke-width: 1.8;
+    stroke-linecap: square;
+    opacity: 0.82;
+  }
+
+  .quarter {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    opacity: 0;
+    transition:
+      transform 980ms cubic-bezier(.58, 0, .14, 1),
+      opacity 360ms ease;
+  }
+
+  .quarter path {
+    fill: none;
+    stroke: var(--active-quarter);
+    stroke-width: 2.1;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .quarter .fill {
+    fill: var(--active-quarter);
+    stroke: none;
+    opacity: 0.98;
+  }
+
+  .quarter.visible {
+    opacity: 1;
+  }
+
+  .quarter.final {
+    opacity: 0.78;
+  }
+
+  .quarter.final:nth-child(3n + 1) {
+    opacity: 1;
+  }
+
+  #quarters.spinning {
+    transform-box: view-box;
+    transform-origin: var(--spin-x, 646px) var(--spin-y, 310px);
+    animation: ringSpin 5600ms linear infinite;
+  }
+
+  @keyframes ringSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+
+  .status {
+    font-family: "Space Mono", monospace;
+    fill: var(--active-status);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+  }
+
+  .corner {
+    position: absolute;
+    right: clamp(24px, 4vw, 54px);
+    bottom: clamp(20px, 4vw, 48px);
+    color: var(--active-status);
+    opacity: 0.7;
+    font: 12px/1 "Space Mono", monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 980px) {
+    .hero {
+      padding: 18px 14px 28px;
+    }
+
+    .stage {
+      min-height: 74svh;
+      --motion-w: 112vw;
+    }
+
+    .stage-copy {
+      width: 88%;
+    }
+
+    .stage-copy::before {
+      width: calc(var(--grid-unit) * 2.1);
+      height: calc(var(--grid-unit) * 2.1);
+      margin-top: calc(var(--grid-unit) * 1.35);
+    }
+
+    .stage-headline {
+      font-size: clamp(40px, 13vw, 62px);
+    }
+
+    .stage-subline {
+      font-size: clamp(15px, 4.5vw, 21px);
+      margin-top: 18px;
+    }
+
+    .motion {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .quarter { transition: none; }
+  }
+</style>
+</head>
+<body>
+  <main class="hero">
+    <section class="stage" id="system" aria-label="Code mit Drehmoment Motion-Prototyp">
+      <div class="playground-frame">
+        <div class="stage-copy" aria-label="Editierbare Headline und Subline">
+          <div class="stage-text-flow">
+            <div class="stage-headline" contenteditable="true" spellcheck="false">DU HAST DEN<br>DREH RAUS?</div>
+          </div>
+          <div class="stage-subline" contenteditable="true" spellcheck="false">Dann komm ins Team.</div>
+        </div>
+        <svg class="motion" viewBox="0 0 960 600" role="img" aria-labelledby="motionTitle">
+          <title id="motionTitle">Quarter-Module ordnen sich im Raster erst zu Kreisen und dann zu einem finalen Kreis.</title>
+          <g id="grid"></g>
+          <g id="quarters"></g>
+          <text class="status" x="126" y="500">GRID / QUARTER / TORQUE</text>
+        </svg>
+      </div>
+    </section>
+    <div class="playground-controls">
+      <button type="button" id="shuffle">Shuffle</button>
+    </div>
+    <div class="corner">torck.io</div>
+  </main>
+
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+  const grid = document.getElementById("grid");
+  const quartersLayer = document.getElementById("quarters");
+  const shuffleButton = document.getElementById("shuffle");
+  const stageCopy = document.querySelector(".stage-copy");
+  const editableHeadline = document.querySelector(".stage-headline");
+  const editableSubline = document.querySelector(".stage-subline");
+  const cell = 80;
+  const size = 80;
+  const minX = 86;
+  const minY = 70;
+  const cols = 11;
+  const rows = 6;
+  let tileEls = [];
+  let runId = 0;
+  let lastLayoutIndex = -1;
+  let lastThemeIndex = -1;
+  let loopTimer = null;
+
+  const outlineSegments = [
+    `M ${size},0 A ${size} ${size} 0 0 1 0,${size}`,
+    `M ${size / 2},0 A ${size / 2} ${size / 2} 0 0 1 0,${size / 2}`,
+    `M ${size / 2},0 L ${size},0`,
+    `M 0,${size / 2} L 0,${size}`,
+  ];
+  const fillSegment = `M ${size},0 A ${size} ${size} 0 0 1 0,${size} L 0,${size / 2} A ${size / 2} ${size / 2} 0 0 0 ${size / 2},0 Z`;
+
+  for (let gx = 0; gx < cols; gx++) {
+    for (let gy = 0; gy < rows; gy++) {
+      const x = minX + gx * cell;
+      const y = minY + gy * cell;
+      const plus = document.createElementNS(NS, "g");
+      plus.setAttribute("class", "grid-plus");
+      plus.innerHTML = `<path d="M ${x - 6} ${y} L ${x + 6} ${y}" /><path d="M ${x} ${y - 6} L ${x} ${y + 6}" />`;
+      grid.appendChild(plus);
+    }
+  }
+
+  function shuffle(items) {
+    const copy = items.slice();
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function slot(gx, gy, rot) {
+    return { x: minX + gx * cell, y: minY + gy * cell, rot };
+  }
+
+  function circleSlots(originX, originY) {
+    return [
+      slot(originX, originY, 180),
+      slot(originX + 1, originY, 270),
+      slot(originX + 1, originY + 1, 0),
+      slot(originX, originY + 1, 90),
+    ];
+  }
+
+  const layouts = [
+    {
+      text: { left: "calc(var(--grid-unit) * 1)", top: "calc(var(--grid-unit) * 1.15)", right: "auto", bottom: "auto", transform: "none", align: "left" },
+      finalOrigin: [7, 2],
+      circleOrigins: [[2, 1], [5, 2], [8, 3]],
+    },
+    {
+      text: { left: "auto", right: "calc(var(--grid-unit) * 1)", top: "calc(var(--grid-unit) * 1.1)", bottom: "auto", transform: "none", align: "right" },
+      finalOrigin: [3, 3],
+      circleOrigins: [[2, 2], [5, 1], [8, 2]],
+    },
+    {
+      text: { left: "50%", top: "calc(var(--grid-unit) * 1.1)", right: "auto", bottom: "auto", transform: "translateX(-50%)", align: "center" },
+      finalOrigin: [5, 3],
+      circleOrigins: [[3, 2], [6, 2], [8, 1]],
+    },
+    {
+      text: { left: "calc(var(--grid-unit) * 1)", top: "auto", right: "auto", bottom: "calc(var(--grid-unit) * 1)", transform: "none", align: "left" },
+      finalOrigin: [7, 1],
+      circleOrigins: [[2, 3], [5, 2], [8, 1]],
+    },
+    {
+      text: { left: "auto", right: "calc(var(--grid-unit) * 1)", top: "auto", bottom: "calc(var(--grid-unit) * 1)", transform: "none", align: "right" },
+      finalOrigin: [3, 1],
+      circleOrigins: [[2, 1], [5, 2], [8, 3]],
+    },
+  ];
+
+  const themes = [
+    {
+      bg: "#415578",
+      grid: "#f0fa28",
+      quarter: "#f0fa28",
+      headline: "#f5f0eb",
+      status: "rgba(240, 250, 40, 0.56)",
+    },
+    {
+      bg: "#415578",
+      grid: "#f5f0eb",
+      quarter: "#f0fa28",
+      headline: "#f5f0eb",
+      status: "rgba(245, 240, 235, 0.46)",
+    },
+    {
+      bg: "#415578",
+      grid: "#f0fa28",
+      quarter: "#f5f0eb",
+      headline: "#f5f0eb",
+      status: "rgba(240, 250, 40, 0.56)",
+    },
+    {
+      bg: "#f5f0eb",
+      grid: "#415578",
+      quarter: "#f0fa28",
+      headline: "#415578",
+      status: "rgba(65, 85, 120, 0.54)",
+    },
+    {
+      bg: "#f5f0eb",
+      grid: "#f0fa28",
+      quarter: "#415578",
+      headline: "#415578",
+      status: "rgba(65, 85, 120, 0.54)",
+    },
+    {
+      bg: "#f5f0eb",
+      grid: "#415578",
+      quarter: "#415578",
+      headline: "#415578",
+      status: "rgba(65, 85, 120, 0.54)",
+    },
+  ];
+
+  function randomSlots(count) {
+    const all = [];
+    for (let gx = 0; gx < cols - 1; gx++) {
+      for (let gy = 0; gy < rows - 1; gy++) {
+        all.push(slot(gx, gy, [0, 90, 180, 270][Math.floor(Math.random() * 4)]));
+      }
+    }
+    return shuffle(all).slice(0, count);
+  }
+
+  function buildTile(index) {
+    const group = document.createElementNS(NS, "g");
+    group.setAttribute("class", "quarter");
+    group.dataset.index = String(index);
+
+    if (index % 4 === 0 || index % 7 === 0) {
+      const fill = document.createElementNS(NS, "path");
+      fill.setAttribute("class", "fill");
+      fill.setAttribute("d", fillSegment);
+      group.appendChild(fill);
+    }
+
+    outlineSegments.forEach((d) => {
+      const path = document.createElementNS(NS, "path");
+      path.setAttribute("d", d);
+      group.appendChild(path);
+    });
+
+    quartersLayer.appendChild(group);
+    return group;
+  }
+
+  function place(el, target) {
+    el.style.transform = `translate(${target.x}px, ${target.y}px) rotate(${target.rot}deg)`;
+  }
+
+  function pickLayout() {
+    let index = Math.floor(Math.random() * layouts.length);
+    if (layouts.length > 1 && index === lastLayoutIndex) {
+      index = (index + 1) % layouts.length;
+    }
+    lastLayoutIndex = index;
+    return layouts[index];
+  }
+
+  function pickTheme() {
+    let index = Math.floor(Math.random() * themes.length);
+    if (themes.length > 1 && index === lastThemeIndex) {
+      index = (index + 1) % themes.length;
+    }
+    lastThemeIndex = index;
+    return themes[index];
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.style.setProperty("--active-bg", theme.bg);
+    document.documentElement.style.setProperty("--active-grid", theme.grid);
+    document.documentElement.style.setProperty("--active-quarter", theme.quarter);
+    document.documentElement.style.setProperty("--active-headline", theme.headline);
+    document.documentElement.style.setProperty("--active-status", theme.status);
+  }
+
+  function applyTextLayout(layout) {
+    stageCopy.classList.toggle("is-center", layout.text.align === "center");
+    stageCopy.classList.toggle("is-right", layout.text.align === "right");
+    stageCopy.style.setProperty("--copy-left", layout.text.left);
+    stageCopy.style.setProperty("--copy-right", layout.text.right);
+    stageCopy.style.setProperty("--copy-top", layout.text.top);
+    stageCopy.style.setProperty("--copy-bottom", layout.text.bottom);
+    stageCopy.style.transform = layout.text.transform;
+    stageCopy.style.textAlign = layout.text.align;
+  }
+
+  function run() {
+    runId += 1;
+    const currentRun = runId;
+    if (loopTimer) window.clearTimeout(loopTimer);
+    quartersLayer.classList.remove("spinning");
+    quartersLayer.innerHTML = "";
+    const layout = pickLayout();
+    const theme = pickTheme();
+    applyTextLayout(layout);
+    applyTheme(theme);
+    const count = 9 + Math.floor(Math.random() * 4);
+    tileEls = Array.from({ length: count }, (_, index) => buildTile(index));
+
+    const starts = randomSlots(count);
+    const circleStage = layout.circleOrigins.flatMap(([gx, gy]) => circleSlots(gx, gy)).slice(0, count);
+    const finalRing = circleSlots(layout.finalOrigin[0], layout.finalOrigin[1]);
+    const finalStage = Array.from({ length: count }, (_, index) => finalRing[index % 4]);
+    const spinCenterX = minX + (layout.finalOrigin[0] + 1) * cell;
+    const spinCenterY = minY + (layout.finalOrigin[1] + 1) * cell;
+    quartersLayer.style.setProperty("--spin-x", `${spinCenterX}px`);
+    quartersLayer.style.setProperty("--spin-y", `${spinCenterY}px`);
+
+    tileEls.forEach((el, index) => {
+      el.classList.remove("visible", "final");
+      el.style.transitionDelay = "0ms";
+      place(el, starts[index]);
+    });
+
+    window.setTimeout(() => {
+      if (currentRun !== runId) return;
+      tileEls.forEach((el, index) => {
+        el.classList.add("visible");
+        el.style.transitionDelay = `${(index % 4) * 65}ms`;
+      });
+    }, 80);
+
+    window.setTimeout(() => {
+      if (currentRun !== runId) return;
+      tileEls.forEach((el, index) => place(el, circleStage[index]));
+    }, 1550);
+
+    window.setTimeout(() => {
+      if (currentRun !== runId) return;
+      tileEls.forEach((el, index) => {
+        el.classList.add("final");
+        el.style.transitionDelay = `${index * 28}ms`;
+        place(el, finalStage[index]);
+      });
+    }, 3400);
+
+    window.setTimeout(() => {
+      if (currentRun !== runId) return;
+      quartersLayer.classList.add("spinning");
+    }, 4700);
+
+    loopTimer = window.setTimeout(() => {
+      if (currentRun !== runId) return;
+      run();
+    }, 10300);
+  }
+
+  shuffleButton.addEventListener("click", run);
+  [
+    ["torck-stage-headline", editableHeadline],
+    ["torck-stage-subline", editableSubline],
+  ].forEach(([key, el]) => {
+    const saved = window.localStorage.getItem(key);
+    if (saved) el.innerHTML = saved;
+    el.addEventListener("input", () => window.localStorage.setItem(key, el.innerHTML));
+  });
+
+  function normalizeSubline() {
+    const normalized = editableSubline.innerText
+      .replace(/\u00a0/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    editableSubline.textContent = normalized || "Dann komm ins Team.";
+    window.localStorage.setItem("torck-stage-subline", editableSubline.textContent);
+  }
+  normalizeSubline();
+  editableSubline.addEventListener("blur", normalizeSubline);
+  editableSubline.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      editableSubline.blur();
+    }
+  });
+
+  window.addEventListener("load", () => {
+    run();
+  });
+</script>
+</body>
+</html>

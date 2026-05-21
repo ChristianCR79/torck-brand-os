@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>torck Fotografie Moodboard</title>
+  <style>
+    @font-face {
+      font-family: "Inter";
+      src: url("Fonts/Inter_28pt-Regular.ttf") format("truetype");
+      font-weight: 400;
+    }
+
+    @font-face {
+      font-family: "Inter";
+      src: url("Fonts/Inter_28pt-Black.ttf") format("truetype");
+      font-weight: 900;
+    }
+
+    @font-face {
+      font-family: "Space Mono";
+      src: url("Fonts/SpaceMono-Regular.ttf") format("truetype");
+      font-weight: 400;
+    }
+
+    :root {
+      --slate: #415578;
+      --yellow: #f0fa28;
+      --cream: #f5f0eb;
+      --ink: #182238;
+      --muted: rgba(24, 34, 56, 0.66);
+      --line: rgba(65, 85, 120, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Inter", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .hero {
+      min-height: 74vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.03fr) minmax(420px, 0.97fr);
+      gap: 56px;
+      align-items: end;
+      padding: 56px 64px 44px;
+      background:
+        linear-gradient(90deg, rgba(245, 240, 235, 0.95) 0 50%, rgba(65, 85, 120, 0.04) 50%),
+        radial-gradient(circle at 85% 20%, rgba(240, 250, 40, 0.18), transparent 22%),
+        var(--cream);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow,
+    .meta,
+    .tag,
+    .caption,
+    .rule-label,
+    .shot-label {
+      font-family: "Space Mono", monospace;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(46px, 5.45vw, 86px);
+      line-height: 0.88;
+      margin: 0;
+      font-weight: 900;
+      color: var(--slate);
+      max-width: 660px;
+      overflow-wrap: normal;
+    }
+
+    .hero-copy {
+      max-width: 680px;
+      margin-top: 30px;
+      font-size: 22px;
+      line-height: 1.45;
+      color: rgba(24, 34, 56, 0.78);
+    }
+
+    .hero-copy strong {
+      color: var(--ink);
+    }
+
+    .signal {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-top: 38px;
+      color: var(--slate);
+    }
+
+    .signal-dot {
+      width: 15px;
+      height: 15px;
+      background: var(--yellow);
+      border-radius: 50%;
+      box-shadow: 0 0 0 9px rgba(240, 250, 40, 0.18);
+    }
+
+    .hero-board {
+      align-self: stretch;
+      min-height: 520px;
+      background: var(--slate);
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      padding: 28px;
+    }
+
+    .hero-board::before {
+      content: "";
+      position: absolute;
+      inset: 28px;
+      background-image:
+        linear-gradient(rgba(245, 240, 235, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 240, 235, 0.12) 1px, transparent 1px);
+      background-size: 52px 52px;
+    }
+
+    .hero-board::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 21%;
+      top: 62%;
+      background: var(--yellow);
+      border-radius: 50%;
+      box-shadow: 56px -2px 0 rgba(240, 250, 40, 0.7), 112px -2px 0 rgba(240, 250, 40, 0.35);
+    }
+
+    .quarter {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border: 28px solid var(--cream);
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      opacity: 0.9;
+    }
+
+    .q1 { left: 28%; top: 48%; transform: rotate(0deg); }
+    .q2 { left: 43%; top: 39%; transform: rotate(90deg); opacity: 0.72; }
+    .q3 { left: 57%; top: 30%; transform: rotate(180deg); opacity: 0.56; }
+
+    .hero-note {
+      position: absolute;
+      right: 28px;
+      bottom: 25px;
+      width: 260px;
+      color: rgba(245, 240, 235, 0.72);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .section {
+      padding: 64px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    h2 {
+      font-size: clamp(34px, 4vw, 64px);
+      line-height: 0.96;
+      margin: 0;
+      color: var(--slate);
+      font-weight: 900;
+      max-width: 780px;
+    }
+
+    .section-kicker {
+      max-width: 460px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .mood-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .tile {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.24);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .plate {
+      height: 278px;
+      position: relative;
+      overflow: hidden;
+      background: var(--slate);
+    }
+
+    .plate img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.9) contrast(0.98);
+    }
+
+    .plate::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, transparent 0 44%, rgba(245, 240, 235, 0.12) 48%, transparent 55%),
+        linear-gradient(0deg, rgba(24, 34, 56, 0.22), transparent 52%);
+      mix-blend-mode: soft-light;
+      opacity: 0.72;
+      pointer-events: none;
+    }
+
+    .plate-photo::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      z-index: 1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(245, 240, 235, 0.13) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 240, 235, 0.13) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: 0.32;
+      mask-image: linear-gradient(90deg, transparent, #000 28%, #000 72%, transparent);
+    }
+
+    .plate-mechanic {
+      background:
+        repeating-linear-gradient(90deg, rgba(245, 240, 235, 0.12) 0 2px, transparent 2px 25px),
+        radial-gradient(circle at 42% 52%, rgba(245, 240, 235, 0.86) 0 12%, transparent 12.4%),
+        radial-gradient(circle at 42% 52%, transparent 0 23%, rgba(245, 240, 235, 0.7) 23.4% 29%, transparent 29.4%),
+        linear-gradient(135deg, #2e3b56, var(--slate));
+    }
+
+    .plate-mechanic .cut {
+      position: absolute;
+      left: 34px;
+      bottom: 34px;
+      width: 74%;
+      height: 62px;
+      border-top: 1px solid rgba(240, 250, 40, 0.85);
+      border-bottom: 1px solid rgba(245, 240, 235, 0.23);
+      transform: skewY(-7deg);
+    }
+
+    .plate-sensor {
+      background:
+        linear-gradient(90deg, rgba(245, 240, 235, 0.08) 1px, transparent 1px),
+        linear-gradient(rgba(245, 240, 235, 0.08) 1px, transparent 1px),
+        linear-gradient(145deg, #303d58, #526789);
+      background-size: 38px 38px, 38px 38px, auto;
+    }
+
+    .sensor-body {
+      position: absolute;
+      left: 20%;
+      top: 25%;
+      width: 58%;
+      height: 36%;
+      border: 2px solid rgba(245, 240, 235, 0.7);
+      border-radius: 4px;
+      background: rgba(245, 240, 235, 0.08);
+      box-shadow: 28px 34px 0 rgba(24, 34, 56, 0.25);
+    }
+
+    .sensor-body::before,
+    .sensor-body::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .sensor-body::before {
+      width: 52px;
+      height: 52px;
+      left: 24px;
+      top: 22px;
+      border: 13px solid rgba(245, 240, 235, 0.72);
+    }
+
+    .sensor-body::after {
+      width: 13px;
+      height: 13px;
+      right: 25px;
+      top: 30px;
+      background: var(--yellow);
+    }
+
+    .plate-interface {
+      background:
+        linear-gradient(135deg, rgba(245, 240, 235, 0.08), transparent 42%),
+        var(--slate);
+    }
+
+    .screen {
+      position: absolute;
+      inset: 34px 28px;
+      border: 1px solid rgba(245, 240, 235, 0.5);
+      border-radius: 5px;
+      background:
+        linear-gradient(rgba(245, 240, 235, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 240, 235, 0.12) 1px, transparent 1px),
+        rgba(24, 34, 56, 0.24);
+      background-size: 28px 28px;
+    }
+
+    .screen svg {
+      position: absolute;
+      inset: 22px;
+      width: calc(100% - 44px);
+      height: calc(100% - 44px);
+    }
+
+    .plate-human {
+      background:
+        radial-gradient(circle at 68% 33%, rgba(245, 240, 235, 0.16) 0 9%, transparent 9.4%),
+        linear-gradient(145deg, #2b3852, var(--slate));
+    }
+
+    .hand {
+      position: absolute;
+      left: 7%;
+      bottom: -10%;
+      width: 60%;
+      height: 44%;
+      background: rgba(245, 240, 235, 0.78);
+      border-radius: 44% 8px 8px 22%;
+      transform: rotate(-10deg);
+      clip-path: polygon(0 38%, 55% 0, 100% 16%, 92% 57%, 62% 64%, 48% 100%, 0 100%);
+    }
+
+    .plan-line {
+      position: absolute;
+      right: 32px;
+      bottom: 44px;
+      width: 46%;
+      height: 1px;
+      background: var(--yellow);
+      box-shadow: 0 -36px 0 rgba(245, 240, 235, 0.34), 0 -72px 0 rgba(245, 240, 235, 0.18);
+    }
+
+    .tile-body {
+      padding: 22px;
+    }
+
+    .tag {
+      display: inline-flex;
+      margin-bottom: 15px;
+      color: var(--slate);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 25px;
+      line-height: 1.05;
+      font-weight: 900;
+    }
+
+    .tile p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .shot-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .header-concept {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .header-image {
+      position: relative;
+      min-height: 420px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--slate);
+      border: 1px solid var(--line);
+    }
+
+    .header-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .header-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(24, 34, 56, 0.08), rgba(24, 34, 56, 0.34)),
+        linear-gradient(rgba(245, 240, 235, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 240, 235, 0.09) 1px, transparent 1px);
+      background-size: auto, 54px 54px, 54px 54px;
+      mix-blend-mode: soft-light;
+      opacity: 0.78;
+    }
+
+    .header-note {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 28px;
+      background: rgba(255, 255, 255, 0.22);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 34px;
+    }
+
+    .header-note h3 {
+      font-size: 34px;
+      max-width: 360px;
+    }
+
+    .header-note p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .wide-motif-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .wide-motif {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .wide-motif-image {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: var(--slate);
+      overflow: hidden;
+    }
+
+    .wide-motif-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .wide-motif-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(24, 34, 56, 0.04), rgba(24, 34, 56, 0.28)),
+        linear-gradient(rgba(245, 240, 235, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 240, 235, 0.08) 1px, transparent 1px);
+      background-size: auto, 54px 54px, 54px 54px;
+      mix-blend-mode: soft-light;
+      opacity: 0.66;
+    }
+
+    .wide-motif-body {
+      padding: 20px 22px 22px;
+    }
+
+    .wide-motif-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .shot {
+      min-height: 220px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.22);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .shot-label {
+      color: var(--slate);
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    .shot-title {
+      color: var(--ink);
+      font-weight: 900;
+      font-size: 24px;
+      line-height: 1.08;
+      margin: 0 0 10px;
+    }
+
+    .shot-desc {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .rules {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .rule-panel {
+      border-radius: 8px;
+      padding: 32px;
+      background: var(--slate);
+      color: var(--cream);
+      min-height: 360px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rule-panel.light {
+      background: rgba(255, 255, 255, 0.25);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .rule-panel::before {
+      content: "";
+      position: absolute;
+      right: 32px;
+      top: 34px;
+      width: 96px;
+      height: 96px;
+      border: 20px solid currentColor;
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      opacity: 0.14;
+    }
+
+    .rule-label {
+      color: var(--yellow);
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .light .rule-label {
+      color: var(--slate);
+    }
+
+    .rule-panel ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 16px;
+      position: relative;
+    }
+
+    .rule-panel li {
+      font-size: 19px;
+      line-height: 1.35;
+      max-width: 620px;
+    }
+
+    .rule-panel li::before {
+      content: "";
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      margin-right: 12px;
+      background: var(--yellow);
+      border-radius: 50%;
+      vertical-align: 2px;
+    }
+
+    .light li::before {
+      background: var(--slate);
+    }
+
+    .references {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .ref {
+      min-height: 116px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      color: var(--slate);
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .ref strong {
+      display: block;
+      color: var(--ink);
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .ref span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .footer {
+      padding: 34px 64px 52px;
+      display: flex;
+      justify-content: space-between;
+      gap: 28px;
+      color: rgba(24, 34, 56, 0.55);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .hero,
+      .section {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-board {
+        min-height: 440px;
+      }
+
+      .mood-grid,
+      .wide-motif-grid,
+      .references {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .shot-list,
+      .header-concept,
+      .rules {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 660px) {
+      .hero,
+      .section {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-kicker {
+        margin-top: 18px;
+      }
+
+      .mood-grid,
+      .wide-motif-grid,
+      .references {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-board {
+        min-height: 340px;
+      }
+
+      .plate {
+        height: 230px;
+      }
+
+      .footer {
+        padding-left: 20px;
+        padding-right: 20px;
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">torck / Foto-Moodboard V0.1</div>
+        <h1>Fotografie als Realitätsanker.</h1>
+        <p class="hero-copy">
+          Die Marke bleibt grafisch: Raster, Quarter, Impuls. Fotos ergänzen das System dort, wo
+          <strong>technische Wirkung sichtbar</strong> werden muss: an Maschinen, Schnittstellen,
+          Daten und Komponenten.
+        </p>
+        <div class="signal">
+          <div class="signal-dot"></div>
+          <div class="meta">Code mit Drehmoment. Nicht als Stimmung. Als Beweis.</div>
+        </div>
+      </div>
+
+      <div class="hero-board" aria-label="Abstraktes torck Raster mit Quarter-Motiven">
+        <div class="quarter q1"></div>
+        <div class="quarter q2"></div>
+        <div class="quarter q3"></div>
+        <div class="hero-note meta">
+          Foto-Logik: echte technische Details, ruhig fotografiert, mit klarer Komposition und
+          funktionalem Yellow-Akzent nur dort, wo etwas aktiv wird.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="software-header">
+      <div class="section-head">
+        <h2>Vier Foto-Rollen</h2>
+        <div class="section-kicker">
+          Fotos werden nicht dekorativ eingesetzt. Jede Richtung hat eine konkrete Aufgabe im
+          Markensystem.
+        </div>
+      </div>
+
+      <div class="mood-grid">
+        <article class="tile">
+          <div class="plate plate-photo plate-mechanic">
+            <img src="moodboard-assets/torck-photo-mechanic.png" alt="Makroaufnahme einer präzise gefrästen Metallkante mit kleinem gelbem Prüfpunkt">
+          </div>
+          <div class="tile-body">
+            <div class="tag">01 / Mechanik</div>
+            <h3>Präzision und Material</h3>
+            <p>Makros von Metall, Kanten, Gewinden, Steckern, Oberflächen. Ruhig, scharf, ohne Werkstatt-Nostalgie.</p>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="plate plate-photo plate-sensor">
+            <img src="moodboard-assets/torck-photo-sensor.png" alt="Kompakter Industriesensor an einem Maschinenmodul mit kleinem gelbem Statuspunkt">
+          </div>
+          <div class="tile-body">
+            <div class="tag">02 / Sensorik</div>
+            <h3>Maschine wird lesbar</h3>
+            <p>Sensoren, Messpunkte, kleine Hardware. Der Moment, in dem physische Prozesse datenfähig werden.</p>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="plate plate-photo plate-interface">
+            <img src="moodboard-assets/torck-photo-interface.png" alt="Industrie-Display mit abstrakter Messkurve und reduzierter Datenansicht">
+          </div>
+          <div class="tile-body">
+            <div class="tag">03 / Interface</div>
+            <h3>Daten im Betrieb</h3>
+            <p>Dashboard-Ausschnitte, Messkurven, Statusanzeigen. Weniger SaaS-Show, mehr laufendes System.</p>
+          </div>
+        </article>
+
+        <article class="tile">
+          <div class="plate plate-photo plate-human">
+            <img src="moodboard-assets/torck-photo-human.png" alt="Hand verbindet einen Industriekabelstecker an einem hellen Maschinenmodul">
+          </div>
+          <div class="tile-body">
+            <div class="tag">04 / Verantwortung</div>
+            <h3>Mensch als Maßstab</h3>
+            <p>Hände, Schulter, Blickrichtung, Justage. Kein Portrait-Hero, kein Meeting-Stock, kein Lächeln in Kamera.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Weitere 16:9-Motive</h2>
+        <div class="section-kicker">
+          Header-taugliche Varianten fuer die vier Foto-Rollen. Gleiche Bildlogik, mehr Flaeche und Ruhe.
+        </div>
+      </div>
+
+      <div class="wide-motif-grid">
+        <article class="wide-motif">
+          <div class="wide-motif-image">
+            <img src="moodboard-assets/torck-16x9-mechanic-02.png" alt="16:9 Mechanikmotiv mit präzise gefrästem Metallring und Slate-Hintergrund">
+          </div>
+          <div class="wide-motif-body">
+            <div class="tag">01 / Mechanik</div>
+            <h3>Der Bogen als Drehmoment</h3>
+            <p>Ein gefräster Ring liefert die mechanische Analogie, ohne das Quarter-System zu illustrieren.</p>
+          </div>
+        </article>
+
+        <article class="wide-motif">
+          <div class="wide-motif-image">
+            <img src="moodboard-assets/torck-16x9-sensor-02.png" alt="16:9 Sensorikmotiv mit zwei Industriesensoren, Gateway und ruhiger Negativfläche">
+          </div>
+          <div class="wide-motif-body">
+            <div class="tag">02 / Sensorik</div>
+            <h3>Maschine wird messbar</h3>
+            <p>Sensoren und Gateway zeigen den Uebergang von physischem Prozess zu digitalem Signal.</p>
+          </div>
+        </article>
+
+        <article class="wide-motif">
+          <div class="wide-motif-image">
+            <img src="moodboard-assets/torck-16x9-interface-02.png" alt="16:9 Interfacemotiv mit industriellem Display, Systemmodulen und Messkurve">
+          </div>
+          <div class="wide-motif-body">
+            <div class="tag">03 / Interface</div>
+            <h3>Software im Betrieb</h3>
+            <p>Ein reales Display als Anker, abstrakte Module als Hinweis auf laufende Architektur.</p>
+          </div>
+        </article>
+
+        <article class="wide-motif">
+          <div class="wide-motif-image">
+            <img src="moodboard-assets/torck-16x9-human-02.png" alt="16:9 Verantwortungsmotiv mit Hand, Präzisionsbauteil, Plan und technischem Screen">
+          </div>
+          <div class="wide-motif-body">
+            <div class="tag">04 / Verantwortung</div>
+            <h3>Entscheidung am Bauteil</h3>
+            <p>Der Mensch bleibt fragmentarisch sichtbar: Hand, Bauteil, Plan, technische Kontrolle.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Cream Background</h2>
+        <div class="section-kicker">
+          Die gleiche Bildlogik auf Warm Cream: heller, offener, naeher an Produkt- und Editorial-Fotografie.
+        </div>
+      </div>
+
+      <div class="wide-motif-grid">
+        <article class="wide-motif">
+          <div class="wide-motif-image">
+            <img src="moodboard-assets/torck-16x9-cream-mechanic.png" alt="16:9 Mechanikmotiv mit gefrästem Metallring auf Warm Cream Hintergrund">
+          </div>
+          <div class="wide-motif-body">
+            <div class="tag">01 / Mechanik / Cream</div>
+            <h3>Praezision mit Luft</h3>
+            <p>Der helle Hintergrund macht die Materialkante sachlicher und laesst mehr Raum fuer Typografie.</p>
+          </div>
+        </article>
+
+        <article class="wide-motif">
+          <div class="wide-motif-image">
+            <img src="moodboard-assets/torck-16x9-cream-sensor.png" alt="16:9 Sensorikmotiv mit Industriesensoren auf hellem Warm Cream Setup">
+          </div>
+          <div class="wide-motif-body">
+            <div class="tag">02 / Sensorik / Cream</div>
+            <h3>Signal auf heller Flaeche</h3>
+            <p>Sensorik bleibt technisch, wirkt aber weniger schwer und besser kombinierbar mit Cream-Seiten.</p>
+          </div>
+        </article>
+
+        <article class="wide-motif">
+          <div class="wide-motif-image">
+            <img src="moodboard-assets/torck-16x9-cream-interface.png" alt="16:9 Interfacemotiv mit Rugged Tablet und Warm Cream Hintergrund">
+          </div>
+          <div class="wide-motif-body">
+            <div class="tag">03 / Interface / Cream</div>
+            <h3>Betrieb ohne Dunkelheit</h3>
+            <p>Ein reales Display traegt die Software-Ebene, der Hintergrund bleibt hell und unaufgeregt.</p>
+          </div>
+        </article>
+
+        <article class="wide-motif">
+          <div class="wide-motif-image">
+            <img src="moodboard-assets/torck-16x9-cream-human.png" alt="16:9 Verantwortungsmotiv mit Hand, Bauteil und technischem Plan auf Warm Cream">
+          </div>
+          <div class="wide-motif-body">
+            <div class="tag">04 / Verantwortung / Cream</div>
+            <h3>Handwerk ohne Pose</h3>
+            <p>Die helle Variante wirkt naeher, bleibt aber bei Hand, Bauteil und Entscheidung statt Portrait.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Konkrete Shot-Beispiele</h2>
+        <div class="section-kicker">
+          Diese Motive koennen direkt als Shooting-Liste oder Suchraster fuer Referenzen genutzt werden.
+        </div>
+      </div>
+
+      <div class="shot-list">
+        <article class="shot">
+          <div>
+            <div class="shot-label">Mechanik</div>
+            <h3 class="shot-title">Gefraeste Kante im Seitenlicht</h3>
+            <p class="shot-desc">Nah, flach, hohe Schaerfe. Oberflaeche zeigt Toleranz und Material. Hintergrund Slate oder neutral dunkel.</p>
+          </div>
+          <div class="meta">Einsatz: Service-Header, Case-Intro</div>
+        </article>
+
+        <article class="shot">
+          <div>
+            <div class="shot-label">Sensorik</div>
+            <h3 class="shot-title">Aktiver Sensor am Maschinenmodul</h3>
+            <p class="shot-desc">Kleiner Yellow-Marker als Overlay oder realer Statuspunkt. Keine Fabrik-Totale, keine Unordnung.</p>
+          </div>
+          <div class="meta">Einsatz: IIoT, Predictive Maintenance</div>
+        </article>
+
+        <article class="shot">
+          <div>
+            <div class="shot-label">Interface</div>
+            <h3 class="shot-title">Messkurve auf industriellem Screen</h3>
+            <p class="shot-desc">Ausschnitt statt ganzes Dashboard. Keine lesbaren Kundendaten. Fokus auf Rhythmus, Kurve, Status.</p>
+          </div>
+          <div class="meta">Einsatz: Data & AI, Jouvoli</div>
+        </article>
+
+        <article class="shot">
+          <div>
+            <div class="shot-label">Prozess</div>
+            <h3 class="shot-title">Schnittstelle wird verbunden</h3>
+            <p class="shot-desc">Stecker, Port, Hand, klare Linie. Zeigt Uebergang von Maschine zu Software ohne Metaphernschwere.</p>
+          </div>
+          <div class="meta">Einsatz: Software + Maschine</div>
+        </article>
+
+        <article class="shot">
+          <div>
+            <div class="shot-label">Realitaet</div>
+            <h3 class="shot-title">Plan, Bauteil, Laptopkante</h3>
+            <p class="shot-desc">Drei Ebenen: physisches Teil, technische Skizze, digitale Kontrolle. Mensch nur fragmentarisch sichtbar.</p>
+          </div>
+          <div class="meta">Einsatz: Ueber uns, Projektarbeit</div>
+        </article>
+
+        <article class="shot">
+          <div>
+            <div class="shot-label">Betrieb</div>
+            <h3 class="shot-title">Ruhiger Maschinenstatus</h3>
+            <p class="shot-desc">Kein Drama, keine roten Alarme. Laufendes System, stabile Anzeige, kleine aktive Markierung.</p>
+          </div>
+          <div class="meta">Einsatz: Qualitaet, Betrieb, Cases</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Headerbild: Software</h2>
+        <div class="section-kicker">
+          Software wird nicht als Code gezeigt, sondern als System, das sauber einrastet.
+        </div>
+      </div>
+
+      <div class="header-concept">
+        <div class="header-image">
+          <img src="moodboard-assets/torck-header-software.png" alt="Software-Headerbild mit industriellem Display, modularer Architektur, Quarter-Impuls und ruhigem Slate-Hintergrund">
+        </div>
+        <aside class="header-note">
+          <div>
+            <div class="tag">Kategorie / Software</div>
+            <h3>Aus Reibung wird ein laufendes System.</h3>
+            <p>
+              Links fragmentierte Module, in der Mitte der gelbe Impuls, rechts eine stabile Architektur.
+              Das Bild bleibt realistisch, aber die torck-Mechanik erklärt die Wirkung.
+            </p>
+          </div>
+          <div class="meta">Einsatz: Website-Header, Service-Seite, Case-Einstieg</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Regeln fuer Suche und Shooting</h2>
+        <div class="section-kicker">
+          Die Regeln verhindern, dass die Bildsprache in generische B2B- oder Tech-Aesthetik kippt.
+        </div>
+      </div>
+
+      <div class="rules">
+        <div class="rule-panel">
+          <div class="rule-label">Do</div>
+          <ul>
+            <li>Technische Details statt allgemeiner Atmosphaere.</li>
+            <li>Klare Achsen, ruhige Flaechen, sichtbare Ordnung.</li>
+            <li>Slate Blue als Gewicht, Cream als Luft, Yellow als funktionaler Impuls.</li>
+            <li>Menschen nur im Tun, als Verantwortungs- und Groessenmassstab.</li>
+            <li>Fotos mit Raster, Quarter oder Motion-System kombinieren.</li>
+          </ul>
+        </div>
+
+        <div class="rule-panel light">
+          <div class="rule-label">Don't</div>
+          <ul>
+            <li>Handshake, Whiteboard-Meeting, lachendes Entwicklerteam.</li>
+            <li>Cyberpunk, Neon-Glow, Serverraum, Hacker-Klischee.</li>
+            <li>Bokeh als Hauptwirkung oder romantisierte Werkstattbilder.</li>
+            <li>Beliebige Stock-Dashboards mit Fantasie-KPIs.</li>
+            <li>Fotos als Hero, wenn das Quarter-System die Idee staerker traegt.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Referenz-Suchpfade</h2>
+        <div class="section-kicker">
+          Startpunkte fuer Bildsuche. Nicht 1:1 uebernehmen, sondern nach den obenstehenden Regeln kuratieren.
+        </div>
+      </div>
+
+      <div class="references">
+        <a class="ref" href="https://unsplash.com/s/photos/machine-parts">
+          <strong>Machine parts</strong>
+          <span>Material, Kanten, technische Oberflaechen. Stark kuratieren.</span>
+        </a>
+        <a class="ref" href="https://unsplash.com/s/photos/cnc-machine">
+          <strong>CNC / machining</strong>
+          <span>Praezision und Fertigung, ohne Werkstatt-Romantik.</span>
+        </a>
+        <a class="ref" href="https://www.ximea.com/products/miniature-compact/ximu-smallest-industrial-usb-cameras">
+          <strong>Industrial cameras</strong>
+          <span>Sensorik als sachlicher Hardware-Beleg.</span>
+        </a>
+        <a class="ref" href="https://datoms.io/iot-platform/dashboards-analytics-reports/">
+          <strong>IIoT dashboards</strong>
+          <span>Nur als inhaltliche Referenz, visuell stark reduzieren.</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="meta">torck.io | Code mit Drehmoment.</div>
+    <div>Fotografie-Moodboard V0.1 / Creative Strategy Abgleich</div>
+  </footer>
+</body>
+</html>

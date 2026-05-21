@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Torck Loop Embed</title>
+<link rel="stylesheet" href="torck-loop.css">
+<style>
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+  }
+
+  body {
+    background: #f5f0eb;
+  }
+</style>
+</head>
+<body>
+  <section class="torck-loop-demo">
+    <div class="torck-loop" data-torck-loop>
+      <div class="torck-loop__stage">
+        <div class="torck-loop__object"></div>
+      </div>
+
+      <div class="torck-loop__controls" aria-label="Torck Loop Darstellung">
+        <div class="torck-loop__color-controls" aria-label="Hintergrundfarbe">
+          <button type="button" data-torck-theme="cream" aria-label="Cream Hintergrund" aria-pressed="true">
+            <span class="torck-loop__swatch torck-loop__swatch--cream"></span>
+          </button>
+          <button type="button" data-torck-theme="slate" aria-label="Slate Blue Hintergrund" aria-pressed="false">
+            <span class="torck-loop__swatch torck-loop__swatch--slate"></span>
+          </button>
+        </div>
+
+        <div class="torck-loop__loop-color-controls" aria-label="Loop Farbe auf blauem Hintergrund">
+          <button type="button" data-torck-loop-color="yellow" aria-label="Electric Yellow Loop" aria-pressed="true">
+            <span class="torck-loop__swatch torck-loop__swatch--yellow"></span>
+          </button>
+          <button type="button" data-torck-loop-color="cream" aria-label="Cream Loop" aria-pressed="false">
+            <span class="torck-loop__swatch torck-loop__swatch--cream"></span>
+          </button>
+        </div>
+
+        <button class="torck-loop__mode-button" type="button" data-torck-mode-toggle aria-label="Filled oder Outline wechseln" aria-pressed="false">
+          <span data-torck-mode-label>Outline</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script src="torck-loop.js"></script>
+</body>
+</html>

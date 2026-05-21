@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>torck — Brand OS</title>
+<style>
+
+@font-face {
+  font-family: 'Inter';
+  src: url('Fonts/Inter_28pt-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('Fonts/Inter_28pt-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('Fonts/Inter_28pt-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('Fonts/SpaceMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('Fonts/SpaceMono-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('Fonts/SpaceMono-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('Fonts/SpaceMono-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --slate: #415578;
+  --yellow: #f0fa28;
+  --cream: #f5f0eb;
+  --dark: #1a1a2e;
+  --text: #2d2d3a;
+  --text-light: #8a8a9a;
+}
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+.mono { font-family: 'Space Mono', monospace; }
+
+/* ---- HERO ---- */
+.hero {
+  min-height: 100vh;
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.hero-grid-bg svg {
+  width: 100%;
+  height: 100%;
+}
+.hero-logo {
+  max-width: 420px;
+  width: 80%;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+.hero-meta {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+.hero-meta .version {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 0.75rem;
+  background: var(--yellow);
+  color: var(--slate);
+  display: inline-block;
+  padding: 0.2em 0.6em 0.25em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.hero-meta .brand-name {
+  font-size: 1rem;
+  color: rgba(65,85,120,0.4);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(65,85,120,0.3);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: pulse 2s ease-in-out infinite;
+  z-index: 2;
+}
+@keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+
+/* ---- NAV ---- */
+nav {
+  position: sticky;
+  top: 0;
+  background: rgba(65,85,120,0.95);
+  backdrop-filter: blur(12px);
+  padding: 0.8rem 2rem;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border-bottom: 1px solid rgba(240,250,40,0.1);
+}
+nav a {
+  color: rgba(245,240,235,0.6);
+  text-decoration: none;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+nav a:hover, nav a.active { color: var(--yellow); }
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(240,250,40,0.12);
+  border: 1px solid rgba(240,250,40,0.3);
+  border-radius: 20px;
+  padding: 0.35rem 1.2rem;
+}
+.nav-group .nav-group-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  color: var(--yellow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-right: 0.3rem;
+}
+
+/* ---- SECTIONS ---- */
+section {
+  padding: 6rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--slate);
+  opacity: 0.5;
+  margin-bottom: 0.5rem;
+}
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--slate);
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+.section-desc {
+  font-size: 1.05rem;
+  color: var(--text-light);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 3rem;
+}
+
+
+/* ---- CHARACTER ---- */
+.character-section {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 3rem;
+  align-items: start;
+}
+.character-photo {
+  position: relative;
+}
+.character-photo img {
+  width: 100%;
+  border-radius: 16px;
+  display: block;
+}
+.character-photo::after {
+  content: '';
+  display: none;
+}
+.character-text h3 {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--slate);
+  margin-bottom: 0.8rem;
+}
+.character-text p {
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+.character-text .trait-highlight {
+  color: var(--slate);
+  font-weight: 700;
+}
+.character-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.character-tags span {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.4em 0.8em;
+  border-radius: 4px;
+  background: rgba(65,85,120,0.06);
+  color: var(--slate);
+}
+.trait-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.trait-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(65,85,120,0.06);
+}
+.trait-card .trait-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.trait-card .trait-value {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--slate);
+  margin-bottom: 0.3rem;
+}
+.trait-card .trait-detail {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+/* ---- PRINCIPLES ---- */
+.principle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.principle-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  border: 1px solid rgba(65,85,120,0.06);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.principle-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: var(--yellow);
+}
+.principle-left {
+  text-align: center;
+  min-width: 100px;
+}
+.principle-left .p-word {
+  font-size: 0.7rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: 'Space Mono', monospace;
+}
+.principle-left .p-icon {
+  font-size: 2.5rem;
+  margin: 0.5rem 0;
+}
+.principle-right {
+  flex: 1;
+}
+.principle-right .p-focus {
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: var(--slate);
+  margin-bottom: 0.3rem;
+}
+.principle-right .p-arrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-light);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+
+/* ---- LEITIDEE ---- */
+.strategy-framework {
+  background: var(--slate);
+  border-radius: 16px;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.framework-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.fw-card {
+  background: rgba(245,240,235,0.06);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(240,250,40,0.06);
+}
+.fw-card .fw-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  opacity: 0.6;
+  margin-bottom: 0.6rem;
+}
+.fw-card .fw-text {
+  font-size: 0.9rem;
+  color: var(--cream);
+  line-height: 1.6;
+}
+.leitidee-statement {
+  background: var(--yellow);
+  border-radius: 12px;
+  padding: 2.5rem;
+  text-align: center;
+}
+.leitidee-statement .li-text {
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: var(--slate);
+  line-height: 1.3;
+}
+.leitidee-statement .li-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--slate);
+  opacity: 0.5;
+  margin-top: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+
+/* ---- LOGO SECTION ---- */
+.logo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.logo-card {
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  position: relative;
+  overflow: hidden;
+}
+.logo-card.dark { background: var(--slate); }
+.logo-card.light { background: var(--cream); border: 1px solid rgba(65,85,120,0.1); }
+.logo-card img { max-width: 320px; width: 85%; }
+.logo-card .card-label {
+  position: absolute;
+  bottom: 1rem; left: 1.5rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.4;
+}
+.logo-card.dark .card-label { color: var(--cream); }
+.logo-card.light .card-label { color: var(--slate); }
+
+.construction-card {
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+  border: 1px solid rgba(65,85,120,0.08);
+}
+.construction-card img { max-width: 500px; width: 90%; }
+.construction-card p {
+  margin-top: 1.5rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-light);
+  letter-spacing: 0.1em;
+}
+
+/* ---- COLORS ---- */
+.color-strip {
+  display: flex;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 200px;
+  margin-bottom: 1.5rem;
+}
+.color-swatch {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+}
+.color-swatch .hex {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.color-swatch .name {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.swatch-slate { background: var(--slate); color: var(--cream); }
+.swatch-yellow { background: var(--yellow); color: var(--slate); }
+.swatch-cream { background: var(--cream); color: var(--slate); border: 1px solid rgba(65,85,120,0.08); }
+
+/* ---- TYPOGRAPHY ---- */
+.type-showcase {
+  margin-bottom: 3rem;
+}
+.type-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.type-block {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  border: 1px solid rgba(65,85,120,0.06);
+}
+.type-block .label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+}
+.type-block .sample-black {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 2.2rem;
+  color: var(--slate);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+.type-block .sample-bold {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--slate);
+  margin-bottom: 0.5rem;
+}
+.type-block .sample-regular {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--text-light);
+}
+.type-block .sample-mono {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.6rem;
+  color: var(--slate);
+  margin-bottom: 0.5rem;
+}
+.type-block .sample-mono-bold {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--slate);
+  margin-bottom: 0.5rem;
+}
+.type-block .sample-mono-reg {
+  font-family: 'Space Mono', monospace;
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* ---- CLAIM ---- */
+.claim-card {
+  background: var(--slate);
+  border-radius: 16px;
+  padding: 4rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.claim-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.2;
+  text-transform: lowercase;
+}
+.claim-highlight {
+  background: var(--yellow);
+  color: var(--slate);
+  padding: 0.15em 0.5em;
+  display: inline-block;
+  border-radius: 6px;
+}
+.claim-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: rgba(245,240,235,0.4);
+  margin-top: 1.5rem;
+  letter-spacing: 0.15em;
+}
+
+/* ---- MOCKUPS ---- */
+.mockup-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.mockup-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #eee;
+}
+.mockup-card img { width: 100%; display: block; }
+
+/* ---- ASSETS / DOWNLOADS ---- */
+.download-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.dl-card {
+  background: white;
+  border: 1px solid rgba(65,85,120,0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+}
+.dl-card:hover {
+  border-color: var(--yellow);
+  box-shadow: 0 4px 20px rgba(65,85,120,0.1);
+  transform: translateY(-2px);
+}
+.dl-icon {
+  width: 48px; height: 48px;
+  background: var(--cream);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--slate);
+}
+.dl-card .dl-name {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+.dl-card .dl-format {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-light);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---- AI SKILL ---- */
+.skill-section {
+  background: var(--slate);
+  border-radius: 24px;
+  padding: 4rem;
+  margin-top: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.skill-section::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -20%;
+  width: 400px; height: 400px;
+  border: 1px solid rgba(240,250,40,0.06);
+  border-radius: 50%;
+}
+.skill-section .section-label { color: var(--yellow); opacity: 0.6; }
+.skill-section .section-title { color: var(--cream); }
+.skill-section .section-desc { color: rgba(245,240,235,0.5); }
+
+.skill-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.skill-card {
+  background: rgba(245,240,235,0.06);
+  border: 1px solid rgba(240,250,40,0.08);
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+}
+.skill-card:hover {
+  background: rgba(240,250,40,0.08);
+  border-color: rgba(240,250,40,0.25);
+  transform: translateY(-2px);
+}
+.skill-card .skill-icon {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.skill-card .skill-name {
+  color: var(--cream);
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.skill-card .skill-desc {
+  color: rgba(245,240,235,0.4);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.skill-card .skill-tag {
+  display: inline-block;
+  margin-top: 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--yellow);
+  background: rgba(240,250,40,0.08);
+  padding: 0.3em 0.8em;
+  border-radius: 4px;
+  letter-spacing: 0.1em;
+}
+
+/* ---- FOOTER ---- */
+footer {
+  background: var(--slate);
+  padding: 3rem 2rem;
+  text-align: center;
+  color: rgba(245,240,235,0.3);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+}
+footer a { color: var(--yellow); text-decoration: none; opacity: 0.5; }
+footer a:hover { opacity: 1; }
+
+/* ---- LOOP 3D EMBED ---- */
+.torck-loop {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--cream);
+  perspective: 1300px;
+  transition: background 320ms ease;
+  border-radius: 16px;
+  aspect-ratio: 16/10;
+}
+.torck-loop.is-slate { background: var(--slate); }
+.torck-loop__stage {
+  position: absolute;
+  left: 50%; top: 47%;
+  width: min(1220px, 118%);
+  aspect-ratio: 220.48 / 142.59;
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.torck-loop__stage:active { cursor: grabbing; }
+.torck-loop__object {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  animation: torckLoopTurn 14000ms cubic-bezier(.45,0,.25,1) infinite alternate;
+  will-change: transform;
+}
+.torck-loop__layer {
+  position: absolute; inset: 0;
+  overflow: visible;
+  transform-style: preserve-3d;
+}
+.torck-loop__layer svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.torck-loop__layer path {
+  fill: var(--slate);
+  stroke: transparent; stroke-width: 0;
+  vector-effect: non-scaling-stroke;
+  transition: fill 260ms ease, stroke 260ms ease, opacity 260ms ease;
+}
+.torck-loop__layer--side path { fill: #2f3f5d; }
+.torck-loop__layer--front path { fill: rgba(65,85,120,0.9); }
+.torck-loop.is-slate .torck-loop__layer path { fill: var(--yellow); }
+.torck-loop.is-slate .torck-loop__layer--side path { fill: #c7d30d; }
+.torck-loop.is-slate .torck-loop__layer--front path { fill: rgba(240,250,40,0.94); }
+.torck-loop.is-outline .torck-loop__layer { opacity: 0 !important; }
+.torck-loop.is-outline .torck-loop__layer--side path { fill: transparent; stroke: rgba(23,32,51,0.34); stroke-width: 1.25; }
+.torck-loop.is-outline .torck-loop__layer--wire { opacity: 1 !important; }
+.torck-loop.is-outline .torck-loop__layer--back path { stroke: rgba(23,32,51,0.28); stroke-width: 1.15; }
+.torck-loop.is-outline .torck-loop__layer--front { opacity: 1 !important; }
+.torck-loop.is-outline .torck-loop__layer--front path { fill: transparent; stroke: #172033; stroke-width: 1.55; }
+.torck-loop.is-slate.is-outline .torck-loop__layer--side path { stroke: rgba(240,250,40,0.34); }
+.torck-loop.is-slate.is-outline .torck-loop__layer--back path { stroke: rgba(240,250,40,0.28); }
+.torck-loop.is-slate.is-outline .torck-loop__layer--front path { stroke: var(--yellow); }
+.torck-loop.is-slate.is-loop-cream .torck-loop__layer path { fill: var(--cream); }
+.torck-loop.is-slate.is-loop-cream .torck-loop__layer--side path { fill: #d6d0c9; }
+.torck-loop.is-slate.is-loop-cream .torck-loop__layer--front path { fill: rgba(245,240,235,0.94); }
+.torck-loop.is-slate.is-loop-cream.is-outline .torck-loop__layer--side path { stroke: rgba(245,240,235,0.36); }
+.torck-loop.is-slate.is-loop-cream.is-outline .torck-loop__layer--back path { stroke: rgba(245,240,235,0.28); }
+.torck-loop.is-slate.is-loop-cream.is-outline .torck-loop__layer--front path { stroke: var(--cream); }
+.torck-loop.is-outline .torck-loop__layer path,
+.torck-loop.is-slate.is-loop-cream.is-outline .torck-loop__layer path { fill: transparent; }
+.torck-loop__controls {
+  position: absolute;
+  left: 50%; bottom: clamp(12px, 2vw, 24px);
+  z-index: 3; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 10px;
+}
+.torck-loop__color-controls, .torck-loop__loop-color-controls { display: flex; gap: 10px; }
+.torck-loop__loop-color-controls { display: none; }
+.torck-loop.is-slate .torck-loop__loop-color-controls { display: flex; }
+.torck-loop button {
+  width: 38px; height: 38px;
+  border: 1px solid rgba(65,85,120,0.34);
+  border-radius: 999px;
+  background: rgba(245,240,235,0.52);
+  color: var(--slate);
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+.torck-loop button:hover { transform: translateY(-2px); border-color: currentColor; }
+.torck-loop button[aria-pressed="true"] { border-color: currentColor; background: rgba(245,240,235,0.62); }
+.torck-loop.is-slate button { border-color: rgba(23,32,51,0.28); color: #172033; background: rgba(245,240,235,0.52); }
+.torck-loop__mode-button {
+  width: auto !important; min-width: 96px;
+  border-radius: 6px !important; margin-left: 4px;
+  padding: 0 12px;
+  font: 400 11px/1 'Space Mono', monospace;
+  text-transform: uppercase;
+}
+.torck-loop__mode-button[aria-pressed="true"] { background: #172033 !important; color: var(--cream); border-color: #172033 !important; }
+.torck-loop.is-slate .torck-loop__mode-button[aria-pressed="true"] { background: var(--yellow) !important; color: #172033; border-color: var(--yellow) !important; }
+.torck-loop__swatch { width: 18px; height: 18px; border-radius: 999px; border: 1px solid rgba(23,32,51,0.24); }
+.torck-loop__swatch--cream { background: var(--cream); }
+.torck-loop__swatch--slate { background: var(--slate); }
+.torck-loop__swatch--yellow { background: var(--yellow); }
+@keyframes torckLoopTurn {
+  0% { transform: rotateX(60deg) rotateY(-25deg) rotateZ(-3deg); }
+  45% { transform: rotateX(54deg) rotateY(10deg) rotateZ(1deg); }
+  100% { transform: rotateX(63deg) rotateY(31deg) rotateZ(4deg); }
+}
+.torck-loop__slider-group {
+  display: flex; align-items: center; gap: 6px;
+}
+.torck-loop__slider-group label {
+  font: 400 10px/1 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(65,85,120,0.6);
+  white-space: nowrap;
+}
+.torck-loop.is-slate .torck-loop__slider-group label {
+  color: rgba(245,240,235,0.5);
+}
+.torck-loop__slider-group input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px; height: 4px;
+  background: rgba(65,85,120,0.18);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.torck-loop.is-slate .torck-loop__slider-group input[type="range"] {
+  background: rgba(245,240,235,0.18);
+}
+.torck-loop__slider-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--slate);
+  border: 2px solid var(--cream);
+  cursor: pointer;
+}
+.torck-loop.is-slate .torck-loop__slider-group input[type="range"]::-webkit-slider-thumb {
+  background: var(--yellow);
+  border-color: var(--slate);
+}
+
+/* ---- TEXT EXAMPLES ACCORDION ---- */
+.text-rule-card {
+  background: var(--slate);
+  border-radius: 12px;
+  padding: 2rem 2.2rem;
+  color: var(--cream);
+  margin-bottom: 1.5rem;
+}
+.text-rule-card .rule-title {
+  font-weight: 900;
+  font-size: 1.05rem;
+  margin-bottom: 0.6rem;
+}
+.text-rule-card .rule-body {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(245,240,235,0.8);
+}
+.text-rule-card .rule-body strong {
+  color: var(--cream);
+}
+.text-tip {
+  background: var(--yellow);
+  color: var(--slate);
+  border-radius: 10px;
+  padding: 1.2rem 1.6rem;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+.text-tip span {
+  font-weight: 400;
+  display: block;
+  margin-top: 0.3rem;
+}
+.text-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.text-accordion details {
+  border-bottom: 1px solid rgba(65,85,120,0.1);
+}
+.text-accordion details:first-child {
+  border-top: 1px solid rgba(65,85,120,0.1);
+}
+.text-accordion summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0.2rem;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--slate);
+  list-style: none;
+  user-select: none;
+}
+.text-accordion summary::-webkit-details-marker { display: none; }
+.text-accordion summary::after {
+  content: '+';
+  font-family: 'Space Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text-light);
+  transition: transform 0.2s ease;
+}
+.text-accordion details[open] summary::after {
+  content: '\2212';
+}
+.text-accordion .acc-body {
+  padding: 0 0.2rem 1.5rem;
+}
+.text-accordion .acc-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 0.3rem;
+}
+.text-accordion .acc-old {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  padding: 0.8rem 1rem;
+  background: rgba(65,85,120,0.04);
+  border-radius: 8px;
+  border-left: 3px solid rgba(65,85,120,0.12);
+  margin-bottom: 0.8rem;
+}
+.text-accordion .acc-new {
+  font-size: 0.88rem;
+  color: var(--slate);
+  line-height: 1.7;
+  font-weight: 500;
+  padding: 0.8rem 1rem;
+  background: rgba(240,250,40,0.08);
+  border-radius: 8px;
+  border-left: 3px solid var(--yellow);
+  margin-bottom: 0.8rem;
+}
+.text-accordion .acc-why {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ---- PLAYGROUND EMBED ---- */
+.torck-playground {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(18px, 2.5vw, 34px);
+  padding: clamp(20px, 3vw, 40px);
+  overflow: hidden;
+  position: relative;
+  background: var(--torck-active-bg, var(--slate));
+  transition: background 520ms ease;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+}
+.torck-playground__frame {
+  position: relative;
+  width: min(100%, 1380px);
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  margin: 0 auto;
+  --torck-motion-w: min(100vw - 40px, 1380px);
+  --torck-grid-unit: calc(var(--torck-motion-w) / 12);
+}
+.torck-playground__copy {
+  position: absolute;
+  z-index: 3;
+  left: var(--torck-copy-left, calc(var(--torck-grid-unit) * 1));
+  right: var(--torck-copy-right, auto);
+  top: var(--torck-copy-top, calc(var(--torck-grid-unit) * 1.2));
+  bottom: var(--torck-copy-bottom, auto);
+  width: calc(var(--torck-grid-unit) * 10);
+  color: var(--cream);
+  pointer-events: none;
+  transition: left 760ms cubic-bezier(.58,0,.14,1), right 760ms cubic-bezier(.58,0,.14,1), top 760ms cubic-bezier(.58,0,.14,1), bottom 760ms cubic-bezier(.58,0,.14,1), transform 760ms cubic-bezier(.58,0,.14,1);
+}
+.torck-playground__copy::before {
+  content: "";
+  float: right;
+  width: calc(var(--torck-grid-unit) * 2.35);
+  height: calc(var(--torck-grid-unit) * 2.35);
+  margin-top: calc(var(--torck-grid-unit) * 1.2);
+  margin-left: calc(var(--torck-grid-unit) * 0.25);
+  shape-outside: circle(50%);
+  border-radius: 50%;
+}
+.torck-playground__text-flow { display: flow-root; }
+.torck-playground__headline, .torck-playground__subline { pointer-events: auto; outline: none; }
+.torck-playground__headline {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(46px, 7vw, 96px);
+  line-height: 0.82;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-variant-caps: all-small-caps;
+  margin: 0;
+  max-width: 100%;
+  color: var(--torck-active-headline, var(--cream));
+}
+.torck-playground__subline {
+  display: inline-block;
+  width: auto;
+  max-width: calc(var(--torck-grid-unit) * 8);
+  background: var(--yellow);
+  color: var(--slate);
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(16px, 1.9vw, 26px);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin-top: clamp(22px, 3.2vw, 36px);
+  padding: 0.08em 0.22em 0.14em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  white-space: nowrap;
+  overflow: visible;
+}
+.torck-playground__copy.is-center .torck-playground__subline { margin-left: auto; margin-right: auto; }
+.torck-playground__copy.is-right .torck-playground__subline { margin-left: auto; }
+.torck-playground__subline br { display: none; }
+.torck-playground__headline:focus, .torck-playground__subline:focus { text-shadow: 0 0 0.01px currentColor; }
+.torck-playground__motion { width: 100%; height: 100%; aspect-ratio: 16 / 10; overflow: visible; }
+.torck-playground__grid-plus { stroke: var(--torck-active-grid, var(--yellow)); stroke-width: 1.8; stroke-linecap: square; opacity: 0.82; }
+.torck-playground__quarter {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  opacity: 0;
+  transition: transform 980ms cubic-bezier(.58,0,.14,1), opacity 360ms ease;
+}
+.torck-playground__quarter path { fill: none; stroke: var(--torck-active-quarter, var(--yellow)); stroke-width: 2.1; stroke-linecap: square; stroke-linejoin: miter; vector-effect: non-scaling-stroke; }
+.torck-playground__quarter .pg-fill { fill: var(--torck-active-quarter, var(--yellow)); stroke: none; opacity: 0.98; }
+.torck-playground__quarter.visible { opacity: 1; }
+.torck-playground__quarter.final { opacity: 0.78; }
+.torck-playground__quarter.final:nth-child(3n + 1) { opacity: 1; }
+.torck-playground__quarters.spinning {
+  transform-box: view-box;
+  transform-origin: var(--torck-spin-x, 646px) var(--torck-spin-y, 310px);
+  animation: torck-ring-spin 5600ms linear infinite;
+}
+@keyframes torck-ring-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.torck-playground__status { font-family: 'Space Mono', monospace; fill: var(--torck-active-status, rgba(240,250,40,0.56)); font-size: 12px; letter-spacing: 0.15em; }
+.torck-playground__controls { display: flex; justify-content: center; align-items: center; min-height: 46px; }
+.torck-playground__button {
+  height: 46px; padding: 0 22px; border-radius: 0; border: 1px solid var(--yellow);
+  background: var(--yellow); color: var(--slate);
+  font: 400 13px/1 'Space Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase;
+  display: inline-flex; align-items: center; cursor: pointer; transition: opacity 0.15s;
+}
+.torck-playground__button:hover { opacity: 0.85; }
+@media (max-width: 980px) {
+  .torck-playground { padding: 18px 14px 28px; }
+  .torck-playground__frame { width: 112%; margin-left: -6%; --torck-motion-w: 112vw; }
+  .torck-playground__copy { width: 88%; }
+  .torck-playground__copy::before { width: calc(var(--torck-grid-unit)*2.1); height: calc(var(--torck-grid-unit)*2.1); margin-top: calc(var(--torck-grid-unit)*1.35); }
+  .torck-playground__headline { font-size: clamp(40px, 13vw, 62px); }
+  .torck-playground__subline { font-size: clamp(15px, 4.5vw, 21px); margin-top: 18px; }
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+  .logo-grid, .type-pair, .mockup-grid, .character-section, .principle-grid, .framework-grid { grid-template-columns: 1fr; }
+  .download-grid, .skill-cards { grid-template-columns: 1fr 1fr; }
+  .trait-grid { grid-template-columns: 1fr 1fr; }
+  .section-title { font-size: 1.8rem; }
+  .claim-text { font-size: 2rem; }
+  section { padding: 4rem 1.5rem; }
+  nav { gap: 1rem; flex-wrap: wrap; }
+  nav a { font-size: 0.6rem; }
+}
+@media (max-width: 480px) {
+  .download-grid, .skill-cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <!-- Cross grid background — slate on cream -->
+  <div class="hero-grid-bg">
+    <svg viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice">
+      <g stroke="rgba(65,85,120,0.08)" stroke-width="1.2" stroke-linecap="square" id="hero-crosses"></g>
+    </svg>
+  </div>
+  <img src="SVG/torck_logo_positive.svg" alt="torck — code mit drehmoment" class="hero-logo">
+  <div class="hero-meta">
+    <div class="version mono">Brand OS v1.0</div>
+    <div class="brand-name">torck.io</div>
+  </div>
+  <div class="scroll-hint mono">&darr; scroll</div>
+</section>
+
+
+<!-- NAV -->
+<nav>
+  <div class="nav-group">
+    <span class="nav-group-label">Creative Strategy</span>
+    <a href="#charakter">Charakter</a>
+    <a href="#prinzipien">Prinzipien</a>
+    <a href="#leitidee">Leitidee</a>
+    <a href="#claim">Claim</a>
+  </div>
+  <a href="#farben">Farben</a>
+  <a href="#typo">Typografie</a>
+  <a href="#logo">Logo</a>
+  <a href="#bildsprache">Bilderwelten</a>
+  <a href="#copy">Copy</a>
+  <a href="#anwendung">Anwendung</a>
+  <a href="#assets">Assets</a>
+  <a href="#skill">AI-Skill</a>
+</nav>
+
+<!-- CHARAKTER -->
+<section id="charakter">
+  <div class="section-label mono">01 / Der uneingeladene Gast</div>
+  <h2 class="section-title">Charakter</h2>
+  <p class="section-desc">torck als uneingeladener Gast &mdash; basierend auf dem Prinzip der Echten Werbung&reg; von C3: Echte Werbung ist wie ein uneingeladener Gast auf einer Party, dem es auf sympathische, unterhaltende und intelligente Art gelingt, das Interesse der anderen Gäste auf sich und seine Botschaft zu ziehen und mit ihnen ins Gespräch zu kommen, ohne dabei störend, aufdringlich oder deplatziert zu wirken.</p>
+  
+  <div class="character-section">
+    <div class="character-photo">
+      <img src="uneingeladener_gast_torck.png" alt="torck als Person" style="max-height:520px; width:auto;">
+      <svg viewBox="0 0 136.34 136.34" style="position:absolute; top:-18px; left:-18px; width:56px; height:56px;">
+        <path d="M74.58,0c0,41.13-33.46,74.58-74.58,74.58v61.75c75.18,0,136.34-61.16,136.34-136.34h-61.75Z" fill="var(--yellow)"/>
+      </svg>
+    </div>
+    <div class="character-text">
+      <p>torck ist 36, dunkler Hoodie, Jeans, Sneakers. Kein riesiges Logo, kein großes Statement. Ein Technik-Nerd mit Smartwatch am Handgelenk.</p>
+      
+      <p>Aber er fällt nicht auf, und das ist ihm recht. Wenn der Anlass es verlangt, zieht er auch den Anzug an &ndash; nicht weil er&rsquo;s braucht, sondern aus Respekt. Eitelkeit ist ihm fremd, Wertschätzung nicht.</p>
+      
+      <p>Smalltalk ist nicht seins. Er steht nicht in der Mitte des Raums und hält keine Vorträge. Aber sobald jemand ein technisches Problem erwähnt, wacht er auf. Dann redet er &ndash; klar, direkt, ohne Umwege. <span class="trait-highlight">Oberpfälzer halt.</span> Buzzwords sind ihm fast schon körperlich unangenehm.</p>
+      
+      <p><span class="trait-highlight">Er ist Techniker mit der Erfahrung von jemandem, der viel gesehen hat, aber der Neugier von jemandem, der gerade erst anfängt.</span> Neue Technologien probiert er aus &ndash; nicht aus Trend, sondern weil er wissen will, ob es besser geht. Wenn nicht, bleibt er beim Bewährten. Kein Drama.</p>
+      
+      <p>Was ihn antreibt, sind die Probleme, an denen andere gescheitert sind. <span class="trait-highlight">Da wird er hartnäckig.</span> Er weiß, dass er eine Lösung findet &ndash; irgendwie, irgendwo, auf seine Art. Und deshalb bekommt er die Freiheit, Dinge so zu machen, wie er es für richtig hält. Weil die, die ihn kennen, wissen: Was er verspricht, hält er. Auch wenn er dafür einen Schritt weiter gehen muss.</p>
+      
+      <p style="font-style:italic; color:var(--text-light); margin-top:1rem; border-left:3px solid var(--yellow); padding-left:1rem;">Verlässlichkeit, Ehrlichkeit, Augenhöhe &ndash; keine Floskeln. Einfach die Art, wie man arbeitet.</p>
+      
+      <div class="character-tags">
+        <span>Direkt</span>
+        <span>Verbindlich</span>
+        <span>Ehrlich</span>
+        <span>Hartnäckig</span>
+        <span>Neugierig</span>
+        <span>Oberpfälzer</span>
+        <span>Kein Buzzword</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="trait-grid">
+    <div class="trait-card">
+      <div class="trait-label">Sprache</div>
+      <div class="trait-value">Direkt und verbindlich</div>
+      <div class="trait-detail">Ohne Buzzwords, ehrlich und trocken.</div>
+    </div>
+    <div class="trait-card">
+      <div class="trait-label">Werte</div>
+      <div class="trait-value">Ehrlichkeit</div>
+      <div class="trait-detail">Wir versprechen nichts, was wir nicht halten können.</div>
+    </div>
+    <div class="trait-card">
+      <div class="trait-label">Motivation</div>
+      <div class="trait-value">Es muss funktionieren</div>
+      <div class="trait-detail">Wir finden eine passende Lösung. Irgendwie und irgendwo.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINZIPIEN -->
+<section id="prinzipien">
+  <div class="section-label mono">02 / Leitlinien für die Kommunikation</div>
+  <h2 class="section-title">Prinzipien</h2>
+  <p class="section-desc">Vier Kontrast-Paare, die definieren wohin torck will &mdash; und wovon es sich bewusst abgrenzt.</p>
+  
+  <div class="principle-grid">
+    <div class="principle-card">
+      <div class="principle-left">
+        <div class="p-word">statt</div>
+        <div style="font-weight:700; color:var(--text-light); font-size:0.85rem;">Hülle</div>
+      </div>
+      <div class="principle-right">
+        <div class="p-arrow mono">&rarr;</div>
+        <div class="p-focus">Identität</div>
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-left">
+        <div class="p-word">statt</div>
+        <div style="font-weight:700; color:var(--text-light); font-size:0.85rem;">Namen</div>
+      </div>
+      <div class="principle-right">
+        <div class="p-arrow mono">&rarr;</div>
+        <div class="p-focus">Story</div>
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-left">
+        <div class="p-word">statt</div>
+        <div style="font-weight:700; color:var(--text-light); font-size:0.85rem;">Status Quo</div>
+      </div>
+      <div class="principle-right">
+        <div class="p-arrow mono">&rarr;</div>
+        <div class="p-focus">Bewegung</div>
+      </div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-left">
+        <div class="p-word">statt</div>
+        <div style="font-weight:700; color:var(--text-light); font-size:0.85rem;">Code</div>
+      </div>
+      <div class="principle-right">
+        <div class="p-arrow mono">&rarr;</div>
+        <div class="p-focus">Mechanik</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEITIDEE -->
+<section id="leitidee">
+  <div class="section-label mono">03 / Creative Strategy Sheet</div>
+  <h2 class="section-title">Leitidee</h2>
+  <p class="section-desc">Das strategische Fundament &mdash; vom Problem zum Namen.</p>
+  
+  <div class="strategy-framework">
+    <div class="framework-grid">
+      <div class="fw-card">
+        <div class="fw-label">Problem</div>
+        <div class="fw-text">Der alte Firmenname wurde abgelegt. Er war eine Zwecklösung, aber nie eine echte Identität &mdash; da ihm offensichtlich niemand nachtrauert.</div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-label">Insight</div>
+        <div class="fw-text">Vertrauen steckt nicht im Namen, es steckt in den Leuten.</div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-label">Vorteil</div>
+        <div class="fw-text">Ein neuer Name kann für das Team arbeiten, statt das Team für den Namen.</div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-label">Drehmoment</div>
+        <div class="fw-text">Softwareentwicklung mit Drehmoment &mdash; Startpunkt, Wendepunkt, Aufbruch. Maschinenbau, Kraft, Präzision.</div>
+      </div>
+    </div>
+    <div class="leitidee-statement">
+      <div class="li-text">Wir beweisen bereits im Namen, dass wir Dinge zuverlässig zum Laufen bringen.</div>
+      <div class="li-sub">Leitidee &mdash; 4 Points Framework</div>
+    </div>
+  </div>
+</section>
+
+<section id="claim">
+  <div class="section-label mono">04 / Claim</div>
+  <h2 class="section-title">Claim</h2>
+  <p class="section-desc" style="max-width:680px;"><em>code mit drehmoment</em> verbindet zwei Welten: die abstrakte, unsichtbare Welt des Codes mit der realen, physischen Welt der Technik. Software wird greifbar, Logik materialisiert sich. torck versteht beide Seiten &mdash; die Sprache der Maschinen und die Anforderungen der Menschen, die sie bedienen. Drehmoment steht für die Kraft, Dinge wieder ans Laufen zu bringen, für Momentum und Antrieb. Aber Drehmoment ist nie nur rohe Kraft: Es braucht Feingefühl und Präzision, um die richtige Wirkung an der richtigen Stelle zu entfalten. Genau das ist der Anspruch von torck.</p>
+
+  <div class="claim-card">
+    <div class="claim-text">
+      <span class="claim-highlight">code mit drehmoment.</span>
+    </div>
+    <div class="claim-sub">code with torque.</div>
+  </div>
+  
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+    <div style="background:white; border-radius:12px; padding:2rem; border:1px solid rgba(65,85,120,0.06);">
+      <div style="font-family:'Space Mono',monospace; font-size:0.6rem; color:var(--text-light); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.8rem;">Deutsch</div>
+      <div style="font-family:'Space Mono',monospace; font-weight:700; font-size:1.3rem; color:var(--slate);">code mit drehmoment.</div>
+    </div>
+    <div style="background:white; border-radius:12px; padding:2rem; border:1px solid rgba(65,85,120,0.06);">
+      <div style="font-family:'Space Mono',monospace; font-size:0.6rem; color:var(--text-light); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.8rem;">English</div>
+      <div style="font-family:'Space Mono',monospace; font-weight:700; font-size:1.3rem; color:var(--slate);">code with torque.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FARBEN -->
+<section id="farben">
+  <div class="section-label mono">05 / Farbwelt</div>
+  <h2 class="section-title">Farben</h2>
+  <p class="section-desc">Drei Farben, klare Hierarchie. Slate Blue trägt die Marke, Electric Yellow setzt gezielte Akzente, Warm Cream schafft Raum und Ruhe. Die Palette ist bewusst reduziert &mdash; jede Farbe hat eine definierte Rolle.</p>
+  
+  <div class="color-strip">
+    <div class="color-swatch swatch-slate">
+      <div class="hex">#415578</div>
+      <div class="name">Slate Blue</div>
+    </div>
+    <div class="color-swatch swatch-yellow">
+      <div class="hex">#f0fa28</div>
+      <div class="name">Electric Yellow</div>
+    </div>
+    <div class="color-swatch swatch-cream">
+      <div class="hex">#f5f0eb</div>
+      <div class="name">Warm Cream</div>
+    </div>
+  </div>
+  
+  <!-- Farbwerte -->
+  <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:1rem; margin-bottom:2.5rem;">
+    <div style="background:white; border-radius:12px; padding:1.5rem; border:1px solid rgba(65,85,120,0.06);">
+      <div style="font-size:0.7rem; color:var(--text-light); margin-bottom:0.5rem;" class="mono">RGB</div>
+      <div style="font-weight:700; color:var(--slate);">65 / 85 / 120</div>
+    </div>
+    <div style="background:white; border-radius:12px; padding:1.5rem; border:1px solid rgba(65,85,120,0.06);">
+      <div style="font-size:0.7rem; color:var(--text-light); margin-bottom:0.5rem;" class="mono">RGB</div>
+      <div style="font-weight:700; color:var(--slate);">240 / 250 / 40</div>
+    </div>
+    <div style="background:white; border-radius:12px; padding:1.5rem; border:1px solid rgba(65,85,120,0.06);">
+      <div style="font-size:0.7rem; color:var(--text-light); margin-bottom:0.5rem;" class="mono">RGB</div>
+      <div style="font-weight:700; color:var(--slate);">245 / 240 / 235</div>
+    </div>
+  </div>
+
+  <!-- Farbrollen -->
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:2.5rem;">
+    <div style="background:var(--slate); border-radius:12px; padding:2rem; color:var(--cream);">
+      <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; opacity:0.5; margin-bottom:0.8rem;">Primärfarbe</div>
+      <div style="font-weight:700; font-size:1rem; margin-bottom:0.5rem;">Slate Blue</div>
+      <div style="font-size:0.8rem; line-height:1.6; opacity:0.8;">Die tragende Farbe der Marke. Slate Blue dominiert Hintergründe, Texte und Flächen. Er vermittelt Verlässlichkeit und technische Kompetenz &mdash; ruhig, aber bestimmt.</div>
+    </div>
+    <div style="background:var(--yellow); border-radius:12px; padding:2rem; position:relative; overflow:hidden;">
+      <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--slate); opacity:0.6; margin-bottom:0.8rem;">Marker-Farbe</div>
+      <div style="font-weight:700; font-size:1rem; color:var(--slate); margin-bottom:0.5rem;">Electric Yellow</div>
+      <div style="font-size:0.8rem; line-height:1.6; color:var(--slate); opacity:0.8;">Die Akzentfarbe. Electric Yellow wird gezielt und dezent als Marker eingesetzt &mdash; für den Claim, Highlights, aktive Zustände und punktuelle Aufmerksamkeit. Sparsam dosiert entfaltet es maximale Wirkung. Als großflächige Hintergrundfarbe ist es nicht vorgesehen.</div>
+    </div>
+    <div style="background:var(--cream); border-radius:12px; padding:2rem; border:1px solid rgba(65,85,120,0.06);">
+      <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">Raumfarbe</div>
+      <div style="font-weight:700; font-size:1rem; color:var(--slate); margin-bottom:0.5rem;">Warm Cream</div>
+      <div style="font-size:0.8rem; line-height:1.6; color:var(--text-light);">Der ruhige Gegenpol. Warm Cream bildet helle Hintergründe und gibt Inhalten Luft zum Atmen. Die warme Tönung unterscheidet torck bewusst von kaltem Weiß &mdash; technisch, aber nie steril.</div>
+    </div>
+  </div>
+
+  <!-- Anwendungsbeispiele -->
+  <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">Farbkombinationen &mdash; Do &amp; Don't</div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+    <div style="background:white; border-radius:12px; padding:1.5rem; border:1px solid rgba(65,85,120,0.06);">
+      <div style="font-weight:700; font-size:0.85rem; color:var(--slate); margin-bottom:0.6rem;">&#10003; Empfohlen</div>
+      <div style="font-size:0.8rem; color:var(--text-light); line-height:1.6;">Slate Blue als Grundton mit Cream-Hintergründen. Electric Yellow nur für Claim-Highlight, aktive Navigation, Buttons und kleine Marker-Elemente. Quarter und Loop in der jeweiligen Kontrastfarbe zum Hintergrund.</div>
+    </div>
+    <div style="background:white; border-radius:12px; padding:1.5rem; border:1px solid rgba(65,85,120,0.06);">
+      <div style="font-weight:700; font-size:0.85rem; color:#c44; margin-bottom:0.6rem;">&#10007; Vermeiden</div>
+      <div style="font-size:0.8rem; color:var(--text-light); line-height:1.6;">Electric Yellow als großflächiger Hintergrund oder für lange Texte. Cream auf Yellow (zu wenig Kontrast). Slate Blue und Yellow in gleicher Gewichtung &mdash; Yellow bleibt immer der kleinere Akzent.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPOGRAFIE -->
+<section id="typo">
+  <div class="section-label mono">06 / Typografie</div>
+  <h2 class="section-title">Schriften</h2>
+  <p class="section-desc">Zwei Schriftfamilien, zwei Rollen. Inter trägt als humanistische Sans-Serif alle Inhalte &mdash; von der Headline bis zum Fließtext. Space Mono setzt als Monospace-Schrift technische Akzente: Claim, URL, Labels und UI-Elemente. Regel: Steht Space Mono in einem farbigen Kasten oder Label, wird sie immer in Bold (700) gesetzt. Die Kombination verbindet Lesbarkeit mit dem Ausdruck von Präzision.</p>
+  
+  <div class="type-pair">
+    <div class="type-block">
+      <div class="label">Praxis &mdash; Inter</div>
+      <div class="sample-black">Software die bewegt</div>
+      <div class="sample-bold">Software die bewegt</div>
+      <div class="sample-regular">Software die bewegt</div>
+    </div>
+    <div class="type-block">
+      <div class="label">Gestaltung &mdash; Space Mono</div>
+      <div class="sample-mono">www.torck.io</div>
+      <div class="sample-mono-bold">code mit drehmoment.</div>
+      <div class="sample-mono-reg">v1.0 &mdash; Brand OS</div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO -->
+<section id="logo">
+  <div class="section-label mono">07 / Wortmarke &amp; Bildmarke</div>
+  <h2 class="section-title">Logo</h2>
+  <p class="section-desc">Das Logo ist der Schriftzug der Wortmarke torck. Dabei ist das O mehr als ein Buchstabe &mdash; es ist das verbindende und aktivierende grafische Element der Marke. Aus ihm leiten sich zwei eigenständige Bildmarken ab: der Loop und der Quarter.</p>
+
+  <!-- Wortmarke -->
+  <h3 style="font-size:1.3rem; font-weight:900; color:var(--slate); margin-top:2.5rem; margin-bottom:0.5rem;">Wortmarke</h3>
+  <p style="font-size:0.95rem; color:var(--text-light); line-height:1.7; margin-bottom:1.5rem; max-width:620px;">Die Wortmarke ist eine maßgeschneiderte Konstruktion. Jeder Buchstabe folgt einem geometrischen Raster mit bewussten Brüchen &mdash; wie guter Code: strukturiert, aber nie langweilig.</p>
+
+  <div class="logo-grid">
+    <div class="logo-card dark">
+      <img src="SVG/torck_logo_negative.svg" alt="Logo auf Dunkel">
+      <span class="card-label">Dunkel / Primary</span>
+    </div>
+    <div class="logo-card light">
+      <img src="SVG/torck_logo_positive.svg" alt="Logo auf Hell">
+      <span class="card-label">Hell / Secondary</span>
+    </div>
+  </div>
+
+  <div class="construction-card">
+    <img src="SVG/torck_logo_build.svg" alt="Logo Konstruktion">
+    <p>Konstruktion &mdash; geometrisches Raster mit optischen Korrekturen</p>
+  </div>
+
+  <!-- Label Varianten -->
+  <h3 style="font-size:1.3rem; font-weight:900; color:var(--slate); margin-top:3rem; margin-bottom:0.5rem;">Label Varianten</h3>
+  <p style="font-size:0.95rem; color:var(--text-light); line-height:1.7; margin-bottom:2rem; max-width:560px;">Das Logo existiert in drei Label-Varianten: D (Deutsch), E (English) und W (Website) &mdash; jeweils als farbige und als Plain-Version. Die Labels ergänzen die Wortmarke um eine funktionale Zeile und ermöglichen flexible Anpassung an verschiedene Kontexte.</p>
+
+  <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">Label &mdash; Farbig</div>
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2rem;">
+    <div class="logo-card dark" style="min-height:180px;">
+      <img src="SVG/torck_logo_addon_negative_d.svg" alt="Label Deutsch farbig" style="max-width:280px; width:85%;">
+      <span class="card-label" style="color:var(--cream);">Deutsch (D)</span>
+    </div>
+    <div class="logo-card dark" style="min-height:180px;">
+      <img src="SVG/torck_logo_addon_negative_e.svg" alt="Label English farbig" style="max-width:280px; width:85%;">
+      <span class="card-label" style="color:var(--cream);">English (E)</span>
+    </div>
+    <div class="logo-card dark" style="min-height:180px;">
+      <img src="SVG/torck_logo_addon_negative_w.svg" alt="Label Website farbig" style="max-width:280px; width:85%;">
+      <span class="card-label" style="color:var(--cream);">Website (W)</span>
+    </div>
+  </div>
+
+  <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">Label &mdash; Plain</div>
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2rem;">
+    <div class="logo-card light" style="min-height:180px;">
+      <img src="SVG/torck_logo_addon_plain_positive_d.svg" alt="Label Deutsch plain" style="max-width:280px; width:85%;">
+      <span class="card-label" style="color:var(--slate);">Deutsch (D)</span>
+    </div>
+    <div class="logo-card light" style="min-height:180px;">
+      <img src="SVG/torck_logo_addon_plain_positive_e.svg" alt="Label English plain" style="max-width:280px; width:85%;">
+      <span class="card-label" style="color:var(--slate);">English (E)</span>
+    </div>
+    <div class="logo-card light" style="min-height:180px;">
+      <img src="SVG/torck_logo_addon_plain_positive_w.svg" alt="Label Website plain" style="max-width:280px; width:85%;">
+      <span class="card-label" style="color:var(--slate);">Website (W)</span>
+    </div>
+  </div>
+
+  <!-- ============ DER LOOP ============ -->
+  <h3 style="font-size:1.3rem; font-weight:900; color:var(--slate); margin-top:4rem; margin-bottom:0.5rem;">Der Loop</h3>
+  <p style="font-size:0.95rem; color:var(--text-light); line-height:1.7; margin-bottom:0.8rem; max-width:620px;">Das O der Wortmarke wird als Loop zur eigenständigen Bildmarke. Der Loop steht für Verbindung und Antrieb &mdash; das In-Bewegung-Setzen, das torck ausmacht. Als markantes grafisches Element lässt er sich vielseitig einsetzen: flächig gefüllt, als Outline oder räumlich in 3D. Der Loop kann alle drei Markenfarben annehmen und funktioniert sowohl als dekoratives Gestaltungselement als auch als eigenständiges Signet.</p>
+
+  <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">Loop &mdash; 3D &middot; Drag to rotate</div>
+  <div class="torck-loop" data-torck-loop style="margin-bottom:2rem;">
+    <div class="torck-loop__stage">
+      <div class="torck-loop__object"></div>
+    </div>
+    <div class="torck-loop__controls" aria-label="Loop Darstellung">
+      <div class="torck-loop__color-controls" aria-label="Hintergrundfarbe">
+        <button type="button" data-torck-theme="cream" aria-label="Cream Hintergrund" aria-pressed="true">
+          <span class="torck-loop__swatch torck-loop__swatch--cream"></span>
+        </button>
+        <button type="button" data-torck-theme="slate" aria-label="Slate Hintergrund" aria-pressed="false">
+          <span class="torck-loop__swatch torck-loop__swatch--slate"></span>
+        </button>
+      </div>
+      <div class="torck-loop__loop-color-controls" aria-label="Loop Farbe">
+        <button type="button" data-torck-loop-color="yellow" aria-label="Yellow Loop" aria-pressed="true">
+          <span class="torck-loop__swatch torck-loop__swatch--yellow"></span>
+        </button>
+        <button type="button" data-torck-loop-color="cream" aria-label="Cream Loop" aria-pressed="false">
+          <span class="torck-loop__swatch torck-loop__swatch--cream"></span>
+        </button>
+      </div>
+      <button class="torck-loop__mode-button" type="button" data-torck-mode-toggle aria-label="Fill/Outline" aria-pressed="false">
+        <span data-torck-mode-label>Outline</span>
+      </button>
+      <div class="torck-loop__slider-group">
+        <label>Tiefe</label>
+        <input type="range" min="4" max="140" value="68" data-torck-depth>
+      </div>
+      <div class="torck-loop__slider-group">
+        <label>Größe</label>
+        <input type="range" min="40" max="160" value="100" data-torck-scale>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">Loop &mdash; Farbvarianten</div>
+  <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; margin-bottom:2rem;">
+    <div class="logo-card dark" style="min-height:150px; padding:1.8rem;">
+      <img src="SVG/torck_loop_negative.svg" alt="Loop Cream auf Slate" style="max-width:100px; width:75%;">
+      <span class="card-label" style="color:var(--cream);">Cream / Slate</span>
+    </div>
+    <div class="logo-card light" style="min-height:150px; padding:1.8rem;">
+      <img src="SVG/torck_loop_positive.svg" alt="Loop Slate auf Cream" style="max-width:100px; width:75%;">
+      <span class="card-label" style="color:var(--slate);">Slate / Cream</span>
+    </div>
+    <div class="logo-card dark" style="min-height:150px; padding:1.8rem;">
+      <img src="SVG/torck_loop_marker.svg" alt="Loop Marker Yellow" style="max-width:100px; width:75%;">
+      <span class="card-label" style="color:var(--yellow);">Marker</span>
+    </div>
+    <div class="logo-card dark" style="min-height:150px; padding:1.8rem;">
+      <img src="SVG/torck_loop_gradient_y.svg" alt="Loop Gradient Yellow" style="max-width:100px; width:75%;">
+      <span class="card-label" style="color:var(--cream);">Gradient Y</span>
+    </div>
+    <div class="logo-card dark" style="min-height:150px; padding:1.8rem;">
+      <img src="SVG/torck_loop_gradient_b.svg" alt="Loop Gradient Blue" style="max-width:100px; width:75%;">
+      <span class="card-label" style="color:var(--cream);">Gradient B</span>
+    </div>
+  </div>
+
+  <!-- ============ DER QUARTER ============ -->
+  <h3 style="font-size:1.3rem; font-weight:900; color:var(--slate); margin-top:4rem; margin-bottom:0.5rem;">Der Quarter</h3>
+  <p style="font-size:0.95rem; color:var(--text-light); line-height:1.7; margin-bottom:0.8rem; max-width:620px;">Der Loop lässt sich grafisch auf einen einzigen Grundbaustein reduzieren: den Quarter. Er ist ein Viertelkreisbogen mit Innen- und Außenradius &mdash; die kleinste Einheit des Markensystems. Der Quarter steht symbolisch für das Drehmoment: Filled oder als Outline eingesetzt, einzeln platziert oder kombiniert, fügen sich Quarter zu einem Kreis zusammen &mdash; zu einer Rotation. Aus dem statischen Baustein entsteht eine dynamische Form, genau wie aus einzelnen Code-Modulen ein laufendes System wird.</p>
+
+  <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">Quarter &mdash; Filled</div>
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2rem;">
+    <div class="logo-card dark" style="min-height:150px; padding:2rem;">
+      <img src="SVG/torck_quarter_negative.svg" alt="Quarter Cream" style="max-width:80px; width:55%;">
+      <span class="card-label" style="color:var(--cream);">Cream / Slate</span>
+    </div>
+    <div class="logo-card light" style="min-height:150px; padding:2rem;">
+      <img src="SVG/torck_quarter_positive.svg" alt="Quarter Slate" style="max-width:80px; width:55%;">
+      <span class="card-label" style="color:var(--slate);">Slate / Cream</span>
+    </div>
+    <div class="logo-card dark" style="min-height:150px; padding:2rem;">
+      <img src="SVG/torck_quarter_marker.svg" alt="Quarter Marker" style="max-width:80px; width:55%;">
+      <span class="card-label" style="color:var(--yellow);">Marker</span>
+    </div>
+  </div>
+
+  <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">Quarter &mdash; Outline</div>
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2rem;">
+    <div class="logo-card dark" style="min-height:150px; padding:2rem;">
+      <img src="SVG/torck_quarter_outline_negative.svg" alt="Quarter Outline Cream" style="max-width:80px; width:55%;">
+      <span class="card-label" style="color:var(--cream);">Outline / Cream</span>
+    </div>
+    <div class="logo-card dark" style="min-height:150px; padding:2rem;">
+      <img src="SVG/torck_quarter_outline_marker.svg" alt="Quarter Outline Marker" style="max-width:80px; width:55%;">
+      <span class="card-label" style="color:var(--yellow);">Outline / Marker</span>
+    </div>
+    <div class="logo-card" style="min-height:150px; padding:2rem; background:var(--slate); border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.8rem;">
+      <div style="display:flex; gap:0.5rem; align-items:flex-end;">
+        <img src="SVG/torck_quarter_marker.svg" alt="Quarter Filled" style="width:36px; transform:rotate(0deg);">
+        <img src="SVG/torck_quarter_outline_negative.svg" alt="Quarter Outline" style="width:36px; transform:rotate(90deg);">
+        <img src="SVG/torck_quarter_marker.svg" alt="Quarter Filled" style="width:36px; transform:rotate(180deg);">
+        <img src="SVG/torck_quarter_outline_negative.svg" alt="Quarter Outline" style="width:36px; transform:rotate(270deg);">
+      </div>
+      <span class="card-label" style="color:var(--cream);">Kombination</span>
+    </div>
+  </div>
+
+  <!-- Ableitungslogik -->
+  <div style="background:white; border-radius:16px; padding:2rem; border:1px solid rgba(65,85,120,0.06); margin-top:1rem;">
+    <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:1.2rem;">Ableitungslogik &mdash; Vom Buchstaben zum System</div>
+    <div style="display:flex; align-items:center; justify-content:center; gap:2rem; flex-wrap:wrap; padding:1rem 0;">
+      <div style="text-align:center;">
+        <img src="SVG/torck_logo_positive.svg" alt="torck Wortmarke" style="height:48px; display:block; margin:0 auto;">
+        <div style="font-family:'Space Mono',monospace; font-size:0.55rem; color:var(--text-light); margin-top:0.4rem; letter-spacing:0.1em;">WORTMARKE</div>
+      </div>
+      <div style="font-size:1.5rem; color:var(--text-light);">&rarr;</div>
+      <div style="text-align:center;">
+        <img src="SVG/torck_loop_marker.svg" alt="Loop" style="height:48px;">
+        <div style="font-family:'Space Mono',monospace; font-size:0.55rem; color:var(--text-light); margin-top:0.4rem; letter-spacing:0.1em;">LOOP</div>
+      </div>
+      <div style="font-size:1.5rem; color:var(--text-light);">&rarr;</div>
+      <div style="text-align:center;">
+        <img src="SVG/torck_quarter_marker.svg" alt="Quarter" style="height:40px;">
+        <div style="font-family:'Space Mono',monospace; font-size:0.55rem; color:var(--text-light); margin-top:0.4rem; letter-spacing:0.1em;">QUARTER</div>
+      </div>
+      <div style="font-size:1.5rem; color:var(--text-light);">&rarr;</div>
+      <div style="text-align:center;">
+        <svg viewBox="0 0 80 80" width="48" height="48">
+          <path d="M40,0 A40,40 0 0,1 0,40 L0,20 A20,20 0 0,0 20,0 Z" fill="var(--yellow)"/>
+          <path d="M80,40 A40,40 0 0,1 40,80 L40,60 A20,20 0 0,0 60,40 Z" fill="var(--yellow)"/>
+          <path d="M40,0 A40,40 0 0,0 80,40 L60,40 A20,20 0 0,1 40,20 Z" fill="none" stroke="var(--yellow)" stroke-width="1.5"/>
+          <path d="M0,40 A40,40 0 0,0 40,80 L40,60 A20,20 0 0,1 20,40 Z" fill="none" stroke="var(--yellow)" stroke-width="1.5"/>
+        </svg>
+        <div style="font-family:'Space Mono',monospace; font-size:0.55rem; color:var(--text-light); margin-top:0.4rem; letter-spacing:0.1em;">SYSTEM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BILDSPRACHE -->
+<section id="bildsprache">
+  <div class="section-label mono">08 / Bilderwelten</div>
+  <h2 class="section-title">Bildsprache</h2>
+  <p class="section-desc" style="max-width:680px;">Die visuelle Sprache von torck arbeitet auf vier Ebenen. Jede Ebene hat eine eigene Funktion, einen eigenen Stil und klare Einsatzregeln. Gemeinsam erzeugen sie ein Bild der Marke, das technische Kompetenz mit menschlicher Nahbarkeit verbindet.</p>
+
+  <!-- Themes: Vier Fotorollen -->
+  <div style="margin-top:2.5rem;">
+    <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">01 &mdash; Themes</div>
+    <p style="font-size:0.95rem; color:var(--text-light); line-height:1.7; margin-bottom:1.5rem; max-width:620px;">Fotos werden nicht dekorativ eingesetzt. Jede der vier Fotorollen hat eine konkrete Aufgabe im Markensystem. Die Farbstimmung orientiert sich am Slate Blue &mdash; gedeckt, ruhig, technisch. Electric Yellow markiert nur dort, wo etwas aktiv wird.</p>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem;">
+      <div>
+        <img src="moodboard-assets/torck-photo-mechanic.png" alt="Fotorolle: Mechanik" style="width:100%; height:200px; object-fit:cover; border-radius:0.5rem; display:block;">
+        <div style="margin-top:0.6rem;">
+          <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); font-weight:700; margin-bottom:0.25rem;">01 / Mechanik</div>
+          <div style="font-size:0.85rem; font-weight:900; margin-bottom:0.2rem;">Präzision und Material</div>
+          <div style="font-size:0.78rem; color:var(--text-light); line-height:1.5;">Makros von Metall, Kanten, Gewinden, Oberflächen. Ruhig, scharf, ohne Werkstatt-Nostalgie.</div>
+        </div>
+      </div>
+      <div>
+        <img src="moodboard-assets/torck-photo-sensor.png" alt="Fotorolle: Sensorik" style="width:100%; height:200px; object-fit:cover; border-radius:0.5rem; display:block;">
+        <div style="margin-top:0.6rem;">
+          <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); font-weight:700; margin-bottom:0.25rem;">02 / Sensorik</div>
+          <div style="font-size:0.85rem; font-weight:900; margin-bottom:0.2rem;">Maschine wird lesbar</div>
+          <div style="font-size:0.78rem; color:var(--text-light); line-height:1.5;">Sensoren, Messpunkte, kleine Hardware. Der Moment, in dem physische Prozesse datenfähig werden.</div>
+        </div>
+      </div>
+      <div>
+        <img src="moodboard-assets/torck-photo-interface.png" alt="Fotorolle: Interface" style="width:100%; height:200px; object-fit:cover; border-radius:0.5rem; display:block;">
+        <div style="margin-top:0.6rem;">
+          <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); font-weight:700; margin-bottom:0.25rem;">03 / Interface</div>
+          <div style="font-size:0.85rem; font-weight:900; margin-bottom:0.2rem;">Daten im Betrieb</div>
+          <div style="font-size:0.78rem; color:var(--text-light); line-height:1.5;">Dashboard-Ausschnitte, Messkurven, Statusanzeigen. Weniger SaaS-Show, mehr laufendes System.</div>
+        </div>
+      </div>
+      <div>
+        <img src="moodboard-assets/torck-photo-human.png" alt="Fotorolle: Verantwortung" style="width:100%; height:200px; object-fit:cover; border-radius:0.5rem; display:block;">
+        <div style="margin-top:0.6rem;">
+          <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); font-weight:700; margin-bottom:0.25rem;">04 / Verantwortung</div>
+          <div style="font-size:0.85rem; font-weight:900; margin-bottom:0.2rem;">Mensch als Maßstab</div>
+          <div style="font-size:0.78rem; color:var(--text-light); line-height:1.5;">Hände, Schulter, Blickrichtung, Justage. Kein Portrait-Hero, kein Meeting-Stock, kein Lächeln in Kamera.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem;">
+      <div>
+        <img src="moodboard-assets/torck-16x9-cream-mechanic.png" alt="Fotorolle: Mechanik (Cream)" style="width:100%; height:200px; object-fit:cover; border-radius:0.5rem; display:block;">
+        <div style="margin-top:0.4rem; font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-light);">Cream-Variante</div>
+      </div>
+      <div>
+        <img src="moodboard-assets/torck-16x9-cream-sensor.png" alt="Fotorolle: Sensorik (Cream)" style="width:100%; height:200px; object-fit:cover; border-radius:0.5rem; display:block;">
+        <div style="margin-top:0.4rem; font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-light);">Cream-Variante</div>
+      </div>
+      <div>
+        <img src="moodboard-assets/torck-16x9-cream-interface.png" alt="Fotorolle: Interface (Cream)" style="width:100%; height:200px; object-fit:cover; border-radius:0.5rem; display:block;">
+        <div style="margin-top:0.4rem; font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-light);">Cream-Variante</div>
+      </div>
+      <div>
+        <img src="moodboard-assets/torck-16x9-cream-human.png" alt="Fotorolle: Verantwortung (Cream)" style="width:100%; height:200px; object-fit:cover; border-radius:0.5rem; display:block;">
+        <div style="margin-top:0.4rem; font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-light);">Cream-Variante</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- People -->
+  <div style="margin-top:2rem;">
+    <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">02 &mdash; People</div>
+    <p style="font-size:0.95rem; color:var(--text-light); line-height:1.7; margin-bottom:1.5rem; max-width:620px;">Portraits und Teambilder zeigen die Menschen hinter dem Code. Die Aufnahmen werden im Duotone-Stil der Marke gehalten &mdash; monochromes Slate Blue als Grundton, dazu der Loop als physisches Requisit in Electric Yellow oder Slate Blue. Das verbindet die Person mit der Marke, ohne inszeniert zu wirken. Der Hintergrund bleibt neutral, der Fokus liegt auf den Menschen und ihrer natürlichen Haltung.</p>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2rem;">
+      <div>
+        <img src="Mitarbeiter/ma_example_01.png" alt="Mitarbeiter mit Loop in Yellow" style="width:100%; border-radius:0.5rem; display:block;">
+      </div>
+      <div>
+        <img src="Mitarbeiter/ma_example_02.png" alt="Mitarbeiterin mit Loop in Blue" style="width:100%; border-radius:0.5rem; display:block;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Illustrations -->
+  <div style="margin-top:2rem;">
+    <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">03 &mdash; Illustrations</div>
+    <p style="font-size:0.95rem; color:var(--text-light); line-height:1.7; margin-bottom:1.5rem; max-width:620px;">Illustrative Elemente visualisieren abstrakte Themen: Prozesse, Zusammenhänge, technische Konzepte. Sie basieren auf den geometrischen Grundformen des Designsystems &mdash; Quarter, Loop, Kreuzraster &mdash; und nutzen ausschließlich die drei Markenfarben. Der Stil ist reduziert und konstruktiv, nie dekorativ. Illustrationen erklären, sie schmücken nicht.</p>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2rem;">
+      <div class="logo-card light" style="min-height:180px; display:flex; align-items:center; justify-content:center;">
+        <svg viewBox="0 0 136.34 136.34" width="80" height="80"><path d="M74.58,0c0,41.13-33.46,74.58-74.58,74.58v61.75c75.18,0,136.34-61.16,136.34-136.34h-61.75Z" fill="var(--slate)"/></svg>
+      </div>
+      <div class="logo-card dark" style="min-height:180px; display:flex; align-items:center; justify-content:center;">
+        <svg viewBox="0 0 220.48 142.59" width="120" height="78"><path d="M165.45,26.08C152.38,10.16,132.55,0,110.35,0,70.99,0,39.08,31.91,39.08,71.27c0,.02,0,.04,0,.05h-.1C38.99,92.82,21.5,110.31,0,110.31v32.28c22.22,0,42.1-10.22,55.17-26.21,13.07,15.97,32.93,26.16,55.17,26.16,39.36,0,71.27-31.91,71.27-71.27,0-.78-.02-1.56-.04-2.33,1.24-20.39,18.21-36.6,38.91-36.6V.05c-22.13,0-41.94,10.14-55.02,26.02ZM110.35,110.13c-21.46,0-38.86-17.4-38.86-38.86s17.4-38.86,38.86-38.86,38.86,17.4,38.86,38.86-17.4,38.86-38.86,38.86Z" fill="var(--yellow)"/></svg>
+      </div>
+      <div class="logo-card light" style="min-height:180px; display:flex; align-items:center; justify-content:center; position:relative; padding:1.2rem;">
+        <svg viewBox="0 0 280 175" width="100%" height="100%" style="max-width:260px; max-height:163px;" xmlns="http://www.w3.org/2000/svg">
+          <!-- Subtile Rasterlinien -->
+          <g stroke="var(--slate)" stroke-width="0.4" opacity="0.12">
+            <!-- Vertikale Linien -->
+            <line x1="14" y1="17" x2="14" y2="158"/>
+            <line x1="42" y1="17" x2="42" y2="158"/>
+            <line x1="70" y1="17" x2="70" y2="158"/>
+            <line x1="98" y1="17" x2="98" y2="158"/>
+            <line x1="126" y1="17" x2="126" y2="158"/>
+            <line x1="154" y1="17" x2="154" y2="158"/>
+            <line x1="182" y1="17" x2="182" y2="158"/>
+            <line x1="210" y1="17" x2="210" y2="158"/>
+            <line x1="238" y1="17" x2="238" y2="158"/>
+            <line x1="266" y1="17" x2="266" y2="158"/>
+            <!-- Horizontale Linien -->
+            <line x1="14" y1="17" x2="266" y2="17"/>
+            <line x1="14" y1="45" x2="266" y2="45"/>
+            <line x1="14" y1="73" x2="266" y2="73"/>
+            <line x1="14" y1="101" x2="266" y2="101"/>
+            <line x1="14" y1="129" x2="266" y2="129"/>
+            <line x1="14" y1="157" x2="266" y2="157"/>
+          </g>
+          <!-- Kreuzmarker an allen Knotenpunkten -->
+          <g stroke="var(--slate)" stroke-width="1.5" stroke-linecap="round" opacity="0.85">
+            <!-- Makro: jede Kreuzposition als <use> über ein definiertes Symbol -->
+            <defs>
+              <symbol id="k" viewBox="-7 -7 14 14">
+                <line x1="-6" y1="0" x2="6" y2="0"/>
+                <line x1="0" y1="-6" x2="0" y2="6"/>
+              </symbol>
+            </defs>
+            <!-- Reihe y=17 -->
+            <use href="#k" x="8"   y="11" width="12" height="12"/>
+            <use href="#k" x="36"  y="11" width="12" height="12"/>
+            <use href="#k" x="64"  y="11" width="12" height="12"/>
+            <use href="#k" x="92"  y="11" width="12" height="12"/>
+            <use href="#k" x="120" y="11" width="12" height="12"/>
+            <use href="#k" x="148" y="11" width="12" height="12"/>
+            <use href="#k" x="176" y="11" width="12" height="12"/>
+            <use href="#k" x="204" y="11" width="12" height="12"/>
+            <use href="#k" x="232" y="11" width="12" height="12"/>
+            <use href="#k" x="260" y="11" width="12" height="12"/>
+            <!-- Reihe y=45 -->
+            <use href="#k" x="8"   y="39" width="12" height="12"/>
+            <use href="#k" x="36"  y="39" width="12" height="12"/>
+            <use href="#k" x="64"  y="39" width="12" height="12"/>
+            <use href="#k" x="92"  y="39" width="12" height="12"/>
+            <use href="#k" x="120" y="39" width="12" height="12"/>
+            <use href="#k" x="148" y="39" width="12" height="12"/>
+            <use href="#k" x="176" y="39" width="12" height="12"/>
+            <use href="#k" x="204" y="39" width="12" height="12"/>
+            <use href="#k" x="232" y="39" width="12" height="12"/>
+            <use href="#k" x="260" y="39" width="12" height="12"/>
+            <!-- Reihe y=73 -->
+            <use href="#k" x="8"   y="67" width="12" height="12"/>
+            <use href="#k" x="36"  y="67" width="12" height="12"/>
+            <use href="#k" x="64"  y="67" width="12" height="12"/>
+            <use href="#k" x="92"  y="67" width="12" height="12"/>
+            <use href="#k" x="120" y="67" width="12" height="12"/>
+            <use href="#k" x="148" y="67" width="12" height="12"/>
+            <use href="#k" x="176" y="67" width="12" height="12"/>
+            <use href="#k" x="204" y="67" width="12" height="12"/>
+            <use href="#k" x="232" y="67" width="12" height="12"/>
+            <use href="#k" x="260" y="67" width="12" height="12"/>
+            <!-- Reihe y=101 -->
+            <use href="#k" x="8"   y="95" width="12" height="12"/>
+            <use href="#k" x="36"  y="95" width="12" height="12"/>
+            <use href="#k" x="64"  y="95" width="12" height="12"/>
+            <use href="#k" x="92"  y="95" width="12" height="12"/>
+            <use href="#k" x="120" y="95" width="12" height="12"/>
+            <use href="#k" x="148" y="95" width="12" height="12"/>
+            <use href="#k" x="176" y="95" width="12" height="12"/>
+            <use href="#k" x="204" y="95" width="12" height="12"/>
+            <use href="#k" x="232" y="95" width="12" height="12"/>
+            <use href="#k" x="260" y="95" width="12" height="12"/>
+            <!-- Reihe y=129 -->
+            <use href="#k" x="8"   y="123" width="12" height="12"/>
+            <use href="#k" x="36"  y="123" width="12" height="12"/>
+            <use href="#k" x="64"  y="123" width="12" height="12"/>
+            <use href="#k" x="92"  y="123" width="12" height="12"/>
+            <use href="#k" x="120" y="123" width="12" height="12"/>
+            <use href="#k" x="148" y="123" width="12" height="12"/>
+            <use href="#k" x="176" y="123" width="12" height="12"/>
+            <use href="#k" x="204" y="123" width="12" height="12"/>
+            <use href="#k" x="232" y="123" width="12" height="12"/>
+            <use href="#k" x="260" y="123" width="12" height="12"/>
+            <!-- Reihe y=157 -->
+            <use href="#k" x="8"   y="151" width="12" height="12"/>
+            <use href="#k" x="36"  y="151" width="12" height="12"/>
+            <use href="#k" x="64"  y="151" width="12" height="12"/>
+            <use href="#k" x="92"  y="151" width="12" height="12"/>
+            <use href="#k" x="120" y="151" width="12" height="12"/>
+            <use href="#k" x="148" y="151" width="12" height="12"/>
+            <use href="#k" x="176" y="151" width="12" height="12"/>
+            <use href="#k" x="204" y="151" width="12" height="12"/>
+            <use href="#k" x="232" y="151" width="12" height="12"/>
+            <use href="#k" x="260" y="151" width="12" height="12"/>
+          </g>
+          <!-- Ein Quarter als Beispiel: zeigt wie Quarter auf Knotenpunkt sitzt -->
+          <path d="M98,45 C98,60.46 85.46,73 70,73 L70,101 C101.47,101 126,76.46 126,45 Z" fill="var(--slate)" opacity="0.18"/>
+          <!-- Highlighted-Kreuz am Knotenpunkt des Quarters (gelb) -->
+          <g stroke="var(--yellow)" stroke-width="2" stroke-linecap="round" opacity="0.9">
+            <line x1="92" y1="45" x2="104" y2="45"/>
+            <line x1="98" y1="39" x2="98" y2="51"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Icons -->
+  <div style="margin-top:2rem;">
+    <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">04 &mdash; Icons</div>
+    <p style="font-size:0.95rem; color:var(--text-light); line-height:1.7; margin-bottom:1.5rem; max-width:620px;">Icons sind funktionale Symbole für Navigation, UI-Elemente und Informationsgrafiken. Sie folgen einer einheitlichen Strichstärke und geometrischen Grundkonstruktion. Rundungen orientieren sich am Radius der Quarter-Form. Icons werden immer in einer Markenfarbe eingesetzt, nie mehrfarbig. Im Slate-Kontext erscheinen sie in Cream oder Yellow, auf hellem Grund in Slate Blue.</p>
+    <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:1rem; margin-bottom:2rem;">
+      <div class="logo-card light" style="min-height:100px; padding:1.2rem;">
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="var(--slate)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="11"/><path d="M16 11v5l3.5 3.5"/></svg>
+      </div>
+      <div class="logo-card light" style="min-height:100px; padding:1.2rem;">
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="var(--slate)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h20M6 16h20M6 24h12"/></svg>
+      </div>
+      <div class="logo-card light" style="min-height:100px; padding:1.2rem;">
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="var(--slate)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l12 10-12 10V6z"/></svg>
+      </div>
+      <div class="logo-card dark" style="min-height:100px; padding:1.2rem;">
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="var(--yellow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16h22M16 5v22"/></svg>
+      </div>
+      <div class="logo-card dark" style="min-height:100px; padding:1.2rem;">
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="var(--yellow)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="14" r="9"/><path d="M21 21l6 6"/></svg>
+      </div>
+      <div class="logo-card dark" style="min-height:100px; padding:1.2rem;">
+        <svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="var(--cream)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l16 16M24 8L8 24"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- COPY -->
+<section id="copy" style="max-width:1100px; margin:0 auto; padding:6rem 2rem;">
+  <div class="section-label mono">09 / Copy</div>
+  <h2 class="section-title">Sprache &amp; Text</h2>
+  <p class="section-desc" style="max-width:680px;">Wie torck schreibt: konkret, technisch wach, selbstbewusst ohne Show. Weg von Buzzwords, hin zu Substanz.</p>
+
+  <!-- Text: Wie schreiben wir -->
+  <div style="margin-top:2rem;">
+    <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:1rem;">Beispiele Anwendung &mdash; Text &amp; Sprachemdash; Vorher / Nachher</div>
+
+    <div class="text-rule-card">
+      <div class="rule-title">Grundregel für torck-Texte</div>
+      <div class="rule-body">Weg von: <strong>&bdquo;innovativ&ldquo;, &bdquo;maßgeschneidert&ldquo;, &bdquo;passgenau&ldquo;, &bdquo;zukunftsfähig&ldquo;, &bdquo;volle Verantwortung&ldquo;, &bdquo;echter Mehrwert&ldquo;, &bdquo;agil ist keine Floskel&ldquo;.</strong><br>Hin zu: konkret, trocken, technisch wach, selbstbewusst ohne Show. torck darf klingen wie jemand, der nicht verkaufen muss, weil er das Problem schon verstanden hat.</div>
+    </div>
+
+    <div class="text-tip">
+      Vorher fragen: Klingt das wie eine Softwarefirma, die sich größer machen will?
+      <span>Nachher schreiben: Klingt das wie jemand, der das Problem verstanden hat und es zuverlässig zum Laufen bringt?</span>
+    </div>
+
+    <div class="text-accordion">
+
+      <details>
+        <summary>Beispiel 1 &mdash; Hero</summary>
+        <div class="acc-body">
+          <div class="acc-label">Vorher (Hahn)</div>
+          <div class="acc-old">&bdquo;Ihr nächstes Software-Projekt wartet nicht &ndash; wir liefern die Experten.&ldquo;</div>
+          <div class="acc-label">Nachher (torck)</div>
+          <div class="acc-new">Ihr Projekt klemmt nicht am Namen der Technologie. Sondern an der Umsetzung. Wir bauen Software, die in der Praxis läuft: sauber gedacht, verlässlich entwickelt, mit genug Drehmoment für die Stellen, an denen es schwierig wird.</div>
+          <div class="acc-why">Die alte Version klingt nach Staffing und austauschbarem Expert:innen-Versprechen. torck benennt eine technische Spannung: Es gibt ein Problem, es muss laufen, wir bringen Kraft auf die Straße.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Beispiel 2 &mdash; Über uns</summary>
+        <div class="acc-body">
+          <div class="acc-label">Vorher (Hahn)</div>
+          <div class="acc-old">Gegründet 2017, Standorte in Deutschland, Österreich, Marokko, individuelle Softwarelösungen, KI, agiles Projektmanagement, technische Expertise.</div>
+          <div class="acc-label">Nachher (torck)</div>
+          <div class="acc-new">torck entwickelt Software für Aufgaben, bei denen Standard nicht weit genug trägt. Seit 2017 arbeiten wir an individuellen Systemen, KI-Anwendungen und digitalen Prozessen. Von Maxhütte-Haidhof aus, mit Teams in Österreich und Marokko. Direkt in der Abstimmung, gründlich in der Technik, pragmatisch in der Umsetzung.</div>
+          <div class="acc-why">Die Fakten bleiben, aber die Reihenfolge ändert sich: nicht zuerst Unternehmensdaten, sondern ein klares Einsatzgebiet. &bdquo;Standard trägt nicht weit genug&ldquo; ist konkreter als &bdquo;maßgeschneiderte Lösungen&ldquo;.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Beispiel 3 &mdash; Verantwortung</summary>
+        <div class="acc-body">
+          <div class="acc-label">Vorher (Hahn)</div>
+          <div class="acc-old">Hahn übernimmt Projektverantwortung, inklusive Projektmanagement und zentralem Ansprechpartner.</div>
+          <div class="acc-label">Nachher (torck)</div>
+          <div class="acc-new">Eine Ansprechperson. Ein Plan. Ein Team, das sich kümmert. Wir halten die technische und organisatorische Verantwortung zusammen. Damit Entscheidungen nicht wandern, Rückfragen nicht versanden und das Projekt in Bewegung bleibt.</div>
+          <div class="acc-why">Die alte Version behauptet Verantwortung. Die neue erklärt, woran Kund:innen sie merken. Das macht aus einem abstrakten Versprechen eine Arbeitsweise.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Beispiel 4 &mdash; Qualität &amp; Engagement</summary>
+        <div class="acc-body">
+          <div class="acc-label">Vorher (Hahn)</div>
+          <div class="acc-old">Europäische Qualitätsstandards, Termintreue, Budgeteinhaltung, passgenaue Ausrichtung.</div>
+          <div class="acc-label">Nachher (torck)</div>
+          <div class="acc-new">Gute Software erkennt man nicht am Versprechen. Sondern daran, dass sie hält. Wir entwickeln so, dass Anforderungen, Aufwand und Technik zusammenpassen. Mit klaren Zwischenständen, ehrlicher Einschätzung und Code, der nicht nur beim ersten Demo-Termin funktioniert.</div>
+          <div class="acc-why">&bdquo;Qualitätsstandards&ldquo; und &bdquo;Budgeteinhaltung&ldquo; sind korrekt, aber generisch. &bdquo;Nicht nur beim ersten Demo-Termin&ldquo; hat die richtige Art von technischer Erfahrung: knapp, leicht trocken, aus der Praxis.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Beispiel 5 &mdash; Agilität &amp; Projektarbeit</summary>
+        <div class="acc-body">
+          <div class="acc-label">Vorher (Hahn)</div>
+          <div class="acc-old">Agilität sei keine Floskel, sondern Alltag; Product Owner und technische Project Leads arbeiten mit internationalen Entwicklungsteams.</div>
+          <div class="acc-label">Nachher (torck)</div>
+          <div class="acc-new">Wir arbeiten beweglich, aber nicht beliebig. Product Owner, technische Leads und Entwicklungsteam bleiben eng dran: an den Anforderungen, am Code und an den Entscheidungen. So entsteht Tempo, ohne dass die Richtung verloren geht.</div>
+          <div class="acc-why">&bdquo;Agilität ist keine Floskel&ldquo; sagt genau das Wort, von dem die Strategie weg will. torck kann Agilität zeigen, ohne sie groß zu erklären. &bdquo;Beweglich, aber nicht beliebig&ldquo; passt zum Prinzip Bewegung statt Status quo.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Beispiel 6 &mdash; Kommunikation</summary>
+        <div class="acc-body">
+          <div class="acc-label">Vorher (Hahn)</div>
+          <div class="acc-old">Offene Kommunikation, keine starren Hierarchien, Augenhöhe, direkte Kommunikation.</div>
+          <div class="acc-label">Nachher (torck)</div>
+          <div class="acc-new">Wir reden direkt. Auch wenn es technisch wird. Vor allem dann. Keine langen Ebenen, keine künstliche Distanz. Wer eine Antwort braucht, bekommt eine. Wer eine ehrliche Einschätzung braucht, auch.</div>
+          <div class="acc-why">Hier wird der Charakter sichtbar: direkt, verbindlich, trocken. Die neue Version klingt weniger nach Kulturleitbild und mehr nach einem Team, das im Projektalltag tatsächlich so handelt.</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Beispiel 7 &mdash; Innovation &amp; Zukunft</summary>
+        <div class="acc-body">
+          <div class="acc-label">Vorher (Hahn)</div>
+          <div class="acc-old">Technologische Lösungen mit echtem Mehrwert, Innovation, verantwortungsvolles Handeln, Zukunft gestalten.</div>
+          <div class="acc-label">Nachher (torck)</div>
+          <div class="acc-new">Neue Technologie interessiert uns, wenn sie ein Problem besser löst. Wir probieren aus, prüfen nach und behalten, was trägt. KI, Automatisierung oder klassische Entwicklung sind für uns keine Bühne. Sie sind Werkzeuge.</div>
+          <div class="acc-why">Fast eins zu eins aus dem Strategiekern: neugierig auf Neues, aber nicht aus Trend. Wenn es besser geht, gut. Wenn nicht, bleibt man beim Bewährten. Genau darin liegt torcks Glaubwürdigkeit.</div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+</section>
+<!-- ANWENDUNG -->
+<section id="anwendung" style="max-width:1100px; margin:0 auto; padding:6rem 2rem;">
+  <div class="section-label mono">10 / Anwendung</div>
+  <h2 class="section-title">Eine Marke mit Drehmoment</h2>
+  <p class="section-desc">Anwendungsbeispiele &mdash; vom Layoutraster bis zur animierten Headline.</p>
+
+  <!-- Kreuzraster als Layoutbasis -->
+  <!-- Raster -->
+  <div style="margin-top:3rem;">
+    <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">Gestaltungselement &mdash; Raster</div>
+    <div style="background:white; border-radius:12px; padding:2rem; border:1px solid rgba(65,85,120,0.06); margin-bottom:2rem;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center;">
+        <div>
+          <div style="font-weight:700; font-size:1rem; color:var(--slate); margin-bottom:0.6rem;">Das Kreuzraster</div>
+          <div style="font-size:0.85rem; color:var(--text-light); line-height:1.7;">Das Kreuzraster steht für die Logik und Struktur von Code &mdash; und bildet das metrische Grundgerüst des gesamten Quarter-Systems. Es folgt einem modularen 16:9-Grid, dessen Knotenpunkte durch kleine Kreuze markiert werden. Raster und Quarter sind konstruktiv verzahnt: Die Außenkanten eines Quarters füllen exakt eine Rasterzelle, und jedes Kreuz sitzt im Mittelpunkt des Kreises, den vier Quarters gemeinsam bilden. So entsteht ein präzises Koordinatensystem, in dem sich Quarter positionieren, kombinieren und animieren lassen. Das Raster wird dezent im Hintergrund eingesetzt und gibt Kompositionen aus Quarter, Typografie und Bild eine gemeinsame visuelle Ordnung. Es kann in allen drei Markenfarben erscheinen.</div>
+        </div>
+        <div style="background:var(--slate); border-radius:10px; padding:1.5rem; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 320 180" style="width:100%; height:auto;">
+            <!-- 3×3 cross grid — crosses sit at cell corners, spacing=60 -->
+            <g stroke="var(--yellow)" stroke-width="1.2" stroke-linecap="square" opacity="0.6">
+              <!-- Row 1 -->
+              <line x1="94" y1="30" x2="106" y2="30"/><line x1="100" y1="24" x2="100" y2="36"/>
+              <line x1="154" y1="30" x2="166" y2="30"/><line x1="160" y1="24" x2="160" y2="36"/>
+              <line x1="214" y1="30" x2="226" y2="30"/><line x1="220" y1="24" x2="220" y2="36"/>
+              <!-- Row 2 -->
+              <line x1="94" y1="90" x2="106" y2="90"/><line x1="100" y1="84" x2="100" y2="96"/>
+              <line x1="214" y1="90" x2="226" y2="90"/><line x1="220" y1="84" x2="220" y2="96"/>
+              <!-- Row 3 -->
+              <line x1="94" y1="150" x2="106" y2="150"/><line x1="100" y1="144" x2="100" y2="156"/>
+              <line x1="154" y1="150" x2="166" y2="150"/><line x1="160" y1="144" x2="160" y2="156"/>
+              <line x1="214" y1="150" x2="226" y2="150"/><line x1="220" y1="144" x2="220" y2="156"/>
+            </g>
+            <!-- Center cross highlighted — Mittelpunkt des Kreises -->
+            <g stroke="var(--yellow)" stroke-width="1.6" stroke-linecap="square" opacity="1">
+              <line x1="154" y1="90" x2="166" y2="90"/><line x1="160" y1="84" x2="160" y2="96"/>
+            </g>
+            <!-- 4 Quarters, each fills exactly one grid cell (60×60) -->
+            <!-- Scaled quarter path: 136.34→60, factor 0.44 -->
+            <!-- Top-left cell (100,30)→(160,90): rot 180, inner curve faces center -->
+            <g transform="translate(100,30) rotate(180,30,30)">
+              <path d="M32.8,0 c0,18.1-14.7,32.8-32.8,32.8 v27.2 c33.1,0,60-26.9,60-60 h-27.2 Z" fill="var(--yellow)" opacity="0.9"/>
+            </g>
+            <!-- Top-right cell (160,30)→(220,90): rot 270, inner curve faces center -->
+            <g transform="translate(160,30) rotate(270,30,30)">
+              <path d="M32.8,0 c0,18.1-14.7,32.8-32.8,32.8 v27.2 c33.1,0,60-26.9,60-60 h-27.2 Z" fill="none" stroke="var(--yellow)" stroke-width="1.4" opacity="0.85"/>
+            </g>
+            <!-- Bottom-right cell (160,90)→(220,150): rot 0, inner curve faces center -->
+            <g transform="translate(160,90)">
+              <path d="M32.8,0 c0,18.1-14.7,32.8-32.8,32.8 v27.2 c33.1,0,60-26.9,60-60 h-27.2 Z" fill="var(--yellow)" opacity="0.9"/>
+            </g>
+            <!-- Bottom-left cell (100,90)→(160,150): rot 90, inner curve faces center -->
+            <g transform="translate(100,90) rotate(90,30,30)">
+              <path d="M32.8,0 c0,18.1-14.7,32.8-32.8,32.8 v27.2 c33.1,0,60-26.9,60-60 h-27.2 Z" fill="none" stroke="var(--yellow)" stroke-width="1.4" opacity="0.85"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Playground -->
+  <div style="margin-top:3rem;">
+    <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem;">Gestaltungselement &mdash; Playground</div>
+    <div style="background:white; border-radius:12px; padding:2rem; border:1px solid rgba(65,85,120,0.06); margin-bottom:2rem;">
+      <div style="font-weight:700; font-size:1rem; color:var(--slate); margin-bottom:0.6rem;">Von der Herausforderung zur Lösung</div>
+      <p style="font-size:0.95rem; color:var(--text-light); line-height:1.7; max-width:620px;">Der Playground visualisiert das Drehmoment von torck. Einzelne Quarter-Elemente erscheinen zunächst verstreut im Raster &mdash; lose Teile ohne erkennbaren Zusammenhang, eine ungelöste Herausforderung. Dann finden sie zueinander, setzen sich zu Kreisen zusammen und beginnen sich zu drehen. Die Animation macht sichtbar, was torck ausmacht: verstehen, wie Dinge funktionieren, die richtigen Elemente identifizieren, sie präzise zusammensetzen und ans Laufen bringen. Jeder Shuffle erzeugt eine neue Komposition &mdash; andere Ausgangslage, andere Farbkombination, aber immer dasselbe Prinzip: aus der Herausforderung wird Bewegung, aus Stillstand wird Drehmoment.</p>
+    </div>
+  </div>
+  <!-- Playground Embed -->
+  <div style="margin-top:0;">
+    <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:1rem;">Playground &mdash; Klick auf Headline &amp; Claim zum Editieren</div>
+    <div class="torck-playground">
+      <div class="torck-playground__frame">
+        <div class="torck-playground__copy">
+          <div class="torck-playground__text-flow">
+            <h3 class="torck-playground__headline" contenteditable="true">Software<br>die bewegt</h3>
+            <p class="torck-playground__subline" contenteditable="true">code mit drehmoment.</p>
+          </div>
+        </div>
+        <svg class="torck-playground__motion" viewBox="0 0 980 560" preserveAspectRatio="xMidYMid meet">
+          <g data-torck-grid></g>
+          <g data-torck-quarters></g>
+        </svg>
+      </div>
+      <div class="torck-playground__controls">
+        <button class="torck-playground__button" data-torck-shuffle>Shuffle</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Mockups -->
+  <div style="margin-top:3rem;">
+    <div style="font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-light); margin-bottom:1rem;">Touchpoints &mdash; Print &amp; Digital</div>
+  
+  <div class="mockup-grid">
+
+    <!-- 01 Cap — Merchandise -->
+    <div class="mockup-card" style="position:relative; overflow:hidden; min-height:380px; padding:0;">
+      <img src="Anwendungen/cap.png" alt="Cap Mockup" style="width:100%; height:100%; object-fit:cover; display:block; min-height:380px;">
+      <div style="position:absolute; bottom:0.8rem; left:1rem; font-family:'Space Mono',monospace; font-size:0.5rem; color:rgba(245,240,235,0.7); letter-spacing:0.1em; text-transform:uppercase; text-shadow:0 1px 4px rgba(0,0,0,0.5);">Cap &mdash; Merchandise</div>
+    </div>
+
+    <!-- 02 Hoodie — Apparel -->
+    <div class="mockup-card" style="position:relative; overflow:hidden; min-height:380px; padding:0;">
+      <img src="Anwendungen/hoodie.png" alt="Hoodie Mockup" style="width:100%; height:100%; object-fit:cover; display:block; min-height:380px;">
+      <div style="position:absolute; bottom:0.8rem; left:1rem; font-family:'Space Mono',monospace; font-size:0.5rem; color:rgba(245,240,235,0.7); letter-spacing:0.1em; text-transform:uppercase; text-shadow:0 1px 4px rgba(0,0,0,0.5);">Hoodie &mdash; Apparel</div>
+    </div>
+
+    <!-- 03 Print — Printmedien -->
+    <div class="mockup-card" style="position:relative; overflow:hidden; min-height:380px; padding:0;">
+      <img src="Anwendungen/print.png" alt="Print Mockup" style="width:100%; height:100%; object-fit:cover; display:block; min-height:380px;">
+      <div style="position:absolute; bottom:0.8rem; left:1rem; font-family:'Space Mono',monospace; font-size:0.5rem; color:rgba(245,240,235,0.7); letter-spacing:0.1em; text-transform:uppercase; text-shadow:0 1px 4px rgba(0,0,0,0.5);">Printmedien</div>
+    </div>
+
+    <!-- 04 Web — Digital -->
+    <div class="mockup-card" style="position:relative; overflow:hidden; min-height:380px; padding:0;">
+      <img src="Anwendungen/web.png" alt="Web Mockup" style="width:100%; height:100%; object-fit:cover; display:block; min-height:380px;">
+      <div style="position:absolute; bottom:0.8rem; left:1rem; font-family:'Space Mono',monospace; font-size:0.5rem; color:rgba(245,240,235,0.7); letter-spacing:0.1em; text-transform:uppercase; text-shadow:0 1px 4px rgba(0,0,0,0.5);">Website &mdash; Digital</div>
+    </div>
+
+  </div>
+  </div>
+</section>
+
+<!-- ASSETS -->
+<section id="assets">
+  <div class="section-label mono">11 / Downloads</div>
+  <h2 class="section-title">Brand Assets</h2>
+  <p class="section-desc">Alle Markenelemente zum Download. Logos, Farben, Schriften &mdash; alles was du für konsistente Kommunikation brauchst.</p>
+  
+  <div class="download-grid">
+    <a class="dl-card" href="torck-logo-paket.zip" download="torck-logo-paket.zip">
+      <div class="dl-icon">SVG</div>
+      <div class="dl-name">Logo-Paket</div>
+      <div class="dl-format">SVG + PNG &mdash; alle Varianten</div>
+    </a>
+    <a class="dl-card" href="torck-farben.json" download="torck-farben.json">
+      <div class="dl-icon">CLR</div>
+      <div class="dl-name">Farbpalette</div>
+      <div class="dl-format">JSON</div>
+    </a>
+    <a class="dl-card" href="torck-fonts.zip" download="torck-fonts.zip">
+      <div class="dl-icon">TTF</div>
+      <div class="dl-name">Schriften</div>
+      <div class="dl-format">Inter + Space Mono</div>
+    </a>
+    <a class="dl-card" href="torck_brand.pdf" download="torck_brand.pdf">
+      <div class="dl-icon">PDF</div>
+      <div class="dl-name">Brand Guidelines</div>
+      <div class="dl-format">PDF</div>
+    </a>
+  </div>
+</section>
+
+<!-- AI SKILL -->
+<section id="skill" style="max-width:1100px; margin:0 auto; padding: 2rem 2rem 6rem;">
+  <div class="skill-section">
+    <div class="section-label mono">12 / AI-Skill</div>
+    <h2 class="section-title">Marke aktivieren</h2>
+    <p class="section-desc">Lade dir die torck Creative Strategy als AI-Skill herunter. Deine KI kennt dann Farben, Tonalitaet, Claim und Bildsprache &mdash; jeder Output ist on-brand.</p>
+    
+    <div class="skill-cards">
+      <a class="skill-card" href="ai-skill/claude/torck-brand-skill.md" download="torck-brand-skill.md">
+        <div class="skill-icon"><img src="ai-skill/icon_claude.svg" alt="Claude" style="width:2.2rem; height:2.2rem;"></div>
+        <div class="skill-name">Claude</div>
+        <div class="skill-desc">Vollständiger Brand-Skill für Claude-Projekte. Einmal einfügen, immer on-brand.</div>
+        <span class="skill-tag">.md</span>
+      </a>
+      <a class="skill-card" href="ai-skill/chatgpt/torck-custom-instructions.txt" download="torck-custom-instructions.txt">
+        <div class="skill-icon"><img src="ai-skill/icon_chatgpt.svg" alt="ChatGPT" style="width:2.2rem; height:2.2rem;"></div>
+        <div class="skill-name">ChatGPT</div>
+        <div class="skill-desc">Custom Instructions für ChatGPT. Komprimiert und sofort einsetzbar.</div>
+        <span class="skill-tag">.txt</span>
+      </a>
+      <a class="skill-card" href="ai-skill/bildgenerator/torck-image-prompts.md" download="torck-image-prompts.md">
+        <div class="skill-icon"><img src="ai-skill/icon_image_generator.svg" alt="Bildgenerator" style="width:2.2rem; height:2.2rem;"></div>
+        <div class="skill-name">Bildgenerator</div>
+        <div class="skill-desc">Prompt-Vorlagen inkl. aller 4 Fotorollen. DALL-E, Flux, Firefly.</div>
+        <span class="skill-tag">.md</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>torck Brand OS v1.0 &mdash; entwickelt von <a href="#">C3 Marketing Agentur GmbH</a></p>
+  <p style="margin-top:0.5rem; opacity:0.5;">Creative Strategy Studio &mdash; Schirmer &amp; Reisnecker &mdash; 2026</p>
+</footer>
+
+<!-- Quarter Script -->
+
+
+
+<!-- Loop 3D Script -->
+<script>
+(() => {
+  const LOOP_PATH = "M165.45,26.08C152.38,10.16,132.55,0,110.35,0,70.99,0,39.08,31.91,39.08,71.27c0,.02,0,.04,0,.05h-.1C38.99,92.82,21.5,110.31,0,110.31v32.28c22.22,0,42.1-10.22,55.17-26.21,13.07,15.97,32.93,26.16,55.17,26.16,39.36,0,71.27-31.91,71.27-71.27,0-.78-.02-1.56-.04-2.33,1.24-20.39,18.21-36.6,38.91-36.6V.05c-22.13,0-41.94,10.14-55.02,26.02ZM110.35,110.13c-21.46,0-38.86-17.4-38.86-38.86s17.4-38.86,38.86-38.86,38.86,17.4,38.86,38.86-17.4,38.86-38.86,38.86Z";
+  const LAYERS = 30;
+
+  function createLayer(className, z, opacity) {
+    const layer = document.createElement("div");
+    layer.className = "torck-loop__layer " + className;
+    layer.style.transform = "translateZ(" + z + "px)";
+    layer.style.opacity = opacity;
+    layer.innerHTML = '<svg viewBox="0 0 220.48 142.59" role="img" aria-label="Torck Loop"><path d="' + LOOP_PATH + '"></path></svg>';
+    return layer;
+  }
+
+  function buildLayers(object, depth) {
+    object.innerHTML = "";
+    for (let i = 0; i < LAYERS; i++) {
+      const t = i / (LAYERS - 1);
+      const z = -depth / 2 + depth * t;
+      const opacity = (0.26 + t * 0.46).toFixed(3);
+      const wireClass = i === 0 ? " torck-loop__layer--wire torck-loop__layer--back" : (i % 8 === 0 ? " torck-loop__layer--wire" : "");
+      object.appendChild(createLayer("torck-loop__layer--side" + wireClass, z, opacity));
+    }
+    object.appendChild(createLayer("torck-loop__layer--front", depth / 2 + 1, 1));
+  }
+
+  function initLoop(root) {
+    const object = root.querySelector(".torck-loop__object");
+    const stage = root.querySelector(".torck-loop__stage");
+    const themeButtons = root.querySelectorAll("[data-torck-theme]");
+    const loopColorButtons = root.querySelectorAll("[data-torck-loop-color]");
+    const modeButton = root.querySelector("[data-torck-mode-toggle]");
+    const modeLabel = root.querySelector("[data-torck-mode-label]");
+    const depthSlider = root.querySelector("[data-torck-depth]");
+    const scaleSlider = root.querySelector("[data-torck-scale]");
+    if (!object || !stage || !modeButton || !modeLabel) return;
+
+    let currentDepth = depthSlider ? +depthSlider.value : 68;
+    buildLayers(object, currentDepth);
+
+    const state = { theme: "cream", mode: "fill", loopColor: "yellow" };
+
+    function syncUi() {
+      root.classList.toggle("is-slate", state.theme === "slate");
+      root.classList.toggle("is-loop-cream", state.theme === "slate" && state.loopColor === "cream");
+      root.classList.toggle("is-outline", state.mode === "outline");
+      themeButtons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.torckTheme === state.theme)));
+      loopColorButtons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.torckLoopColor === state.loopColor)));
+      modeButton.setAttribute("aria-pressed", String(state.mode === "outline"));
+      modeLabel.textContent = state.mode === "outline" ? "Fill" : "Outline";
+    }
+
+    themeButtons.forEach(b => b.addEventListener("click", () => { state.theme = b.dataset.torckTheme; if (state.theme !== "slate") state.loopColor = "yellow"; syncUi(); }));
+    loopColorButtons.forEach(b => b.addEventListener("click", () => { state.loopColor = b.dataset.torckLoopColor; state.theme = "slate"; syncUi(); }));
+    modeButton.addEventListener("click", () => { state.mode = state.mode === "outline" ? "fill" : "outline"; syncUi(); });
+
+    /* --- Depth slider: rebuild layers on change --- */
+    if (depthSlider) {
+      depthSlider.addEventListener("input", () => {
+        currentDepth = +depthSlider.value;
+        const wasAnim = !manualMode;
+        buildLayers(object, currentDepth);
+        if (manualMode) {
+          object.style.animation = "none";
+          object.style.transform = "rotateX(" + rx + "deg) rotateY(" + ry + "deg) rotateZ(" + rz + "deg)";
+        }
+      });
+    }
+
+    /* --- Scale slider: resize stage --- */
+    if (scaleSlider) {
+      scaleSlider.addEventListener("input", () => {
+        const pct = +scaleSlider.value;
+        stage.style.width = "calc(min(1220px, 118vw) * " + (pct / 100) + ")";
+      });
+    }
+
+    /* --- Drag-to-rotate + auto-rotation resume --- */
+    let drag = false, lastX = 0, lastY = 0;
+    let rx = 58, ry = -20, rz = -2;
+    let manualMode = false;
+    let resumeTimer = null;
+
+    function applyDrag() {
+      object.style.animation = "none";
+      object.style.transform = "rotateX(" + rx + "deg) rotateY(" + ry + "deg) rotateZ(" + rz + "deg)";
+    }
+
+    function resumeAutoRotation() {
+      manualMode = false;
+      object.style.transform = "";
+      object.style.animation = "";
+    }
+
+    stage.addEventListener("pointerdown", e => {
+      drag = true; manualMode = true;
+      lastX = e.clientX; lastY = e.clientY;
+      stage.setPointerCapture(e.pointerId);
+      if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = null; }
+      applyDrag();
+    });
+
+    stage.addEventListener("pointermove", e => {
+      if (!drag) return;
+      ry += (e.clientX - lastX) * 0.32;
+      rx -= (e.clientY - lastY) * 0.22;
+      rx = Math.max(18, Math.min(78, rx));
+      lastX = e.clientX; lastY = e.clientY;
+      applyDrag();
+    });
+
+    stage.addEventListener("pointerup", e => {
+      drag = false;
+      try { stage.releasePointerCapture(e.pointerId); } catch(_){}
+      resumeTimer = setTimeout(resumeAutoRotation, 2400);
+    });
+
+    syncUi();
+  }
+
+  document.querySelectorAll("[data-torck-loop]").forEach(initLoop);
+})();
+</script>
+
+<!-- Hero cross grid generator -->
+<script>
+(function() {
+  const g = document.getElementById('hero-crosses');
+  if (!g) return;
+  const step = 60, arm = 6, cols = 17, rows = 10;
+  for (let x = 0; x < cols; x++) {
+    for (let y = 0; y < rows; y++) {
+      const cx = 30 + x * step, cy = 20 + y * step;
+      const l1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l1.setAttribute('x1', cx - arm); l1.setAttribute('y1', cy);
+      l1.setAttribute('x2', cx + arm); l1.setAttribute('y2', cy);
+      const l2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l2.setAttribute('x1', cx); l2.setAttribute('y1', cy - arm);
+      l2.setAttribute('x2', cx); l2.setAttribute('y2', cy + arm);
+      g.appendChild(l1);
+      g.appendChild(l2);
+    }
+  }
+})();
+</script>
+
+<!-- Playground Embed Script -->
+<script>
+(() => {
+  const NS = "http://www.w3.org/2000/svg";
+  const playground = document.querySelector(".torck-playground");
+  if (!playground) return;
+
+  const grid = playground.querySelector("[data-torck-grid]");
+  const quartersLayer = playground.querySelector("[data-torck-quarters]");
+  const shuffleButton = playground.querySelector("[data-torck-shuffle]");
+  const copyBlock = playground.querySelector(".torck-playground__copy");
+  const editableHeadline = playground.querySelector(".torck-playground__headline");
+  const editableSubline = playground.querySelector(".torck-playground__subline");
+  quartersLayer.classList.add("torck-playground__quarters");
+
+  const cell = 80;
+  const size = 80;
+  const minX = 86;
+  const minY = 70;
+  const cols = 11;
+  const rows = 6;
+
+  let tileEls = [];
+  let runId = 0;
+  let lastLayoutIndex = -1;
+  let lastThemeIndex = -1;
+  let loopTimer = null;
+
+  const outlineSegments = [
+    `M ${size},0 A ${size} ${size} 0 0 1 0,${size}`,
+    `M ${size/2},0 A ${size/2} ${size/2} 0 0 1 0,${size/2}`,
+    `M ${size/2},0 L ${size},0`,
+    `M 0,${size/2} L 0,${size}`,
+  ];
+  const fillSegment = `M ${size},0 A ${size} ${size} 0 0 1 0,${size} L 0,${size/2} A ${size/2} ${size/2} 0 0 0 ${size/2},0 Z`;
+
+  const layouts = [
+    { text: { left: "calc(var(--torck-grid-unit)*1)", top: "calc(var(--torck-grid-unit)*1.15)", right: "auto", bottom: "auto", transform: "none", align: "left" }, finalOrigin: [7,2], circleOrigins: [[2,1],[5,2],[8,3]] },
+    { text: { left: "auto", right: "calc(var(--torck-grid-unit)*1)", top: "calc(var(--torck-grid-unit)*1.1)", bottom: "auto", transform: "none", align: "right" }, finalOrigin: [3,3], circleOrigins: [[2,2],[5,1],[8,2]] },
+    { text: { left: "50%", top: "calc(var(--torck-grid-unit)*1.1)", right: "auto", bottom: "auto", transform: "translateX(-50%)", align: "center" }, finalOrigin: [5,3], circleOrigins: [[3,2],[6,2],[8,1]] },
+    { text: { left: "calc(var(--torck-grid-unit)*1)", top: "auto", right: "auto", bottom: "calc(var(--torck-grid-unit)*1)", transform: "none", align: "left" }, finalOrigin: [7,1], circleOrigins: [[2,3],[5,2],[8,1]] },
+    { text: { left: "auto", right: "calc(var(--torck-grid-unit)*1)", top: "auto", bottom: "calc(var(--torck-grid-unit)*1)", transform: "none", align: "right" }, finalOrigin: [3,1], circleOrigins: [[2,1],[5,2],[8,3]] },
+  ];
+
+  const themes = [
+    { bg: "#415578", grid: "#f0fa28", quarter: "#f0fa28", headline: "#f5f0eb", status: "rgba(240,250,40,0.56)" },
+    { bg: "#415578", grid: "#f5f0eb", quarter: "#f0fa28", headline: "#f5f0eb", status: "rgba(245,240,235,0.46)" },
+    { bg: "#415578", grid: "#f0fa28", quarter: "#f5f0eb", headline: "#f5f0eb", status: "rgba(240,250,40,0.56)" },
+    { bg: "#f5f0eb", grid: "#415578", quarter: "#f0fa28", headline: "#415578", status: "rgba(65,85,120,0.54)" },
+    { bg: "#f5f0eb", grid: "#f0fa28", quarter: "#415578", headline: "#415578", status: "rgba(65,85,120,0.54)" },
+    { bg: "#f5f0eb", grid: "#415578", quarter: "#415578", headline: "#415578", status: "rgba(65,85,120,0.54)" },
+  ];
+
+  for (let gx = 0; gx < cols; gx++) {
+    for (let gy = 0; gy < rows; gy++) {
+      const x = minX + gx * cell;
+      const y = minY + gy * cell;
+      const plus = document.createElementNS(NS, "g");
+      plus.setAttribute("class", "torck-playground__grid-plus");
+      plus.innerHTML = '<path d="M '+(x-6)+' '+y+' L '+(x+6)+' '+y+'" /><path d="M '+x+' '+(y-6)+' L '+x+' '+(y+6)+'" />';
+      grid.appendChild(plus);
+    }
+  }
+
+  function shuffle(items) {
+    const copy = items.slice();
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function slot(gx, gy, rot) { return { x: minX + gx * cell, y: minY + gy * cell, rot }; }
+
+  function circleSlots(ox, oy) {
+    return [slot(ox, oy, 180), slot(ox+1, oy, 270), slot(ox+1, oy+1, 0), slot(ox, oy+1, 90)];
+  }
+
+  function randomSlots(count) {
+    const all = [];
+    for (let gx = 0; gx < cols - 1; gx++)
+      for (let gy = 0; gy < rows - 1; gy++)
+        all.push(slot(gx, gy, [0,90,180,270][Math.floor(Math.random()*4)]));
+    return shuffle(all).slice(0, count);
+  }
+
+  function buildTile(index) {
+    const group = document.createElementNS(NS, "g");
+    group.setAttribute("class", "torck-playground__quarter");
+    if (index % 4 === 0 || index % 7 === 0) {
+      const fill = document.createElementNS(NS, "path");
+      fill.setAttribute("class", "pg-fill");
+      fill.setAttribute("d", fillSegment);
+      group.appendChild(fill);
+    }
+    outlineSegments.forEach(d => {
+      const path = document.createElementNS(NS, "path");
+      path.setAttribute("d", d);
+      group.appendChild(path);
+    });
+    quartersLayer.appendChild(group);
+    return group;
+  }
+
+  function place(el, target) {
+    el.style.transform = 'translate('+target.x+'px,'+target.y+'px) rotate('+target.rot+'deg)';
+  }
+
+  function pickLayout() {
+    let i = Math.floor(Math.random() * layouts.length);
+    if (layouts.length > 1 && i === lastLayoutIndex) i = (i + 1) % layouts.length;
+    lastLayoutIndex = i;
+    return layouts[i];
+  }
+  function pickTheme() {
+    let i = Math.floor(Math.random() * themes.length);
+    if (themes.length > 1 && i === lastThemeIndex) i = (i + 1) % themes.length;
+    lastThemeIndex = i;
+    return themes[i];
+  }
+
+  function applyTextLayout(layout) {
+    copyBlock.classList.toggle("is-center", layout.text.align === "center");
+    copyBlock.classList.toggle("is-right", layout.text.align === "right");
+    copyBlock.style.setProperty("--torck-copy-left", layout.text.left);
+    copyBlock.style.setProperty("--torck-copy-right", layout.text.right);
+    copyBlock.style.setProperty("--torck-copy-top", layout.text.top);
+    copyBlock.style.setProperty("--torck-copy-bottom", layout.text.bottom);
+    copyBlock.style.transform = layout.text.transform;
+    copyBlock.style.textAlign = layout.text.align;
+  }
+  function applyTheme(theme) {
+    playground.style.setProperty("--torck-active-bg", theme.bg);
+    playground.style.setProperty("--torck-active-grid", theme.grid);
+    playground.style.setProperty("--torck-active-quarter", theme.quarter);
+    playground.style.setProperty("--torck-active-headline", theme.headline);
+    playground.style.setProperty("--torck-active-status", theme.status);
+  }
+
+  function run() {
+    runId += 1;
+    const currentRun = runId;
+    if (loopTimer) window.clearTimeout(loopTimer);
+    quartersLayer.classList.remove("spinning");
+    quartersLayer.innerHTML = "";
+
+    const layout = pickLayout();
+    const theme = pickTheme();
+    applyTextLayout(layout);
+    applyTheme(theme);
+
+    const count = 9 + Math.floor(Math.random() * 4);
+    tileEls = Array.from({ length: count }, (_, i) => buildTile(i));
+
+    const starts = randomSlots(count);
+    const circleStage = layout.circleOrigins.flatMap(([gx,gy]) => circleSlots(gx,gy)).slice(0, count);
+    const finalRing = circleSlots(layout.finalOrigin[0], layout.finalOrigin[1]);
+    const finalStage = Array.from({ length: count }, (_, i) => finalRing[i % 4]);
+    const spinCX = minX + (layout.finalOrigin[0]+1) * cell;
+    const spinCY = minY + (layout.finalOrigin[1]+1) * cell;
+
+    quartersLayer.style.setProperty("--torck-spin-x", spinCX+"px");
+    quartersLayer.style.setProperty("--torck-spin-y", spinCY+"px");
+
+    tileEls.forEach((el, i) => { el.classList.remove("visible","final"); el.style.transitionDelay="0ms"; place(el, starts[i]); });
+
+    window.setTimeout(() => {
+      if (currentRun !== runId) return;
+      tileEls.forEach((el, i) => { el.classList.add("visible"); el.style.transitionDelay = (i%4)*65+"ms"; });
+    }, 80);
+
+    window.setTimeout(() => {
+      if (currentRun !== runId) return;
+      tileEls.forEach((el, i) => place(el, circleStage[i]));
+    }, 1550);
+
+    window.setTimeout(() => {
+      if (currentRun !== runId) return;
+      tileEls.forEach((el, i) => { el.classList.add("final"); el.style.transitionDelay = i*28+"ms"; place(el, finalStage[i]); });
+    }, 3400);
+
+    window.setTimeout(() => { if (currentRun !== runId) return; quartersLayer.classList.add("spinning"); }, 4700);
+    loopTimer = window.setTimeout(() => { if (currentRun !== runId) return; run(); }, 10300);
+  }
+
+  // Start only when visible
+  const pgObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { run(); pgObserver.disconnect(); }
+    });
+  }, { threshold: 0.2 });
+  pgObserver.observe(playground);
+
+  shuffleButton.addEventListener("click", () => { run(); });
+
+  // Editable text
+  function normalizeSubline() {
+    const n = editableSubline.innerText.replace(/\u00a0/g," ").replace(/\s+/g," ").trim();
+    editableSubline.textContent = n || "code mit drehmoment.";
+  }
+  editableSubline.addEventListener("blur", normalizeSubline);
+  editableSubline.addEventListener("keydown", e => { if(e.key==="Enter"){e.preventDefault();editableSubline.blur();} });
+})();
+</script>
+</body>
+</html>
